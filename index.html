@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课2026年更新-需求汇总</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #1e40af;
+      --primary-light: #3b82f6;
+      --accent-color: #f97316;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 2px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-top: 20px;
+    }
+
+    .topics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .topic-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .topic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    
+
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .topic-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    
+
+    .topic-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topic-purpose {
+      background: rgba(30, 64, 175, 0.08);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+
+    .topic-purpose strong {
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+
+    .topic-purpose p {
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
+
+    .reference-products {
+      margin-bottom: 20px;
+    }
+
+    .reference-products strong {
+      color: var(--primary-color);
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .product-tag {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .optimizations-section {
+      margin-top: 20px;
+    }
+
+    .optimizations-section strong {
+      color: var(--accent-color);
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .optimization-list {
+      list-style: none;
+    }
+
+    .optimization-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .optimization-item:last-child {
+      border-bottom: none;
+    }
+
+    .optimization-item::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .optimization-item span {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>人周一课2026年更新</h1>
+      <p>需求汇总</p>
+    </header>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <div class="topic-header">
+          <span class="topic-number">01</span>
+          <h2 class="topic-title">提高评价率</h2>
+        </div>
+        
+        <div class="topic-purpose">
+          <strong>目的</strong>
+          <p>希望通过评价量筛选出好课</p>
+        </div>
+
+
+        <div class="optimizations-section">
+          <strong>优化方向</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>打分入口优化：增加woa，与直播相关的视频课，定期提醒，系列课/关联课的评价提示或共用</span>
+            </li>
+            <li class="optimization-item">
+              <span>打分条件放宽：如开始看课程就提示打分</span>
+            </li>
+            <li class="optimization-item">
+              <span>打分操作优化：一键评分、简化题目、增加提示词、可修改评分</span>
+            </li>
+            <li class="optimization-item">
+              <span>增加“评分结果”露出，提升打分可能性</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header">
+          <span class="topic-number">02</span>
+          <h2 class="topic-title">课程搜索分类</h2>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>优化方向</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>增加分类标签层级</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header">
+          <span class="topic-number">03</span>
+          <h2 class="topic-title">系列课程集合</h2>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>优化方向</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>便于查看系列课，方便切换上下集</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header">
+          <span class="topic-number">04</span>
+          <h2 class="topic-title">提问功能更改</h2>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>优化方向</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>变成一个"论坛留言板"的功能</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2026 人周一课 | 需求汇总文档</p>
+    </footer>
+  </div>
+</body>
+</html>

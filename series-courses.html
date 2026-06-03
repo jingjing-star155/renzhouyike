@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课 - 系列课程</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #3a3a3a;
+      --nav-text: #ffffff;
+      --nav-active: #f97316;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #f97316;
+      --btn-hover: #ea580c;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .nav-bar {
+      background-color: var(--nav-bg);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-content {
+      max-width: 90vw;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--nav-text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-logo img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 12px 0;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--nav-active);
+      border-bottom-color: var(--nav-active);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--nav-text);
+      font-size: 14px;
+    }
+
+    .nav-user img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #555;
+    }
+
+    .nav-user .logout {
+      color: #999;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .nav-user .logout:hover {
+      color: var(--nav-active);
+    }
+
+    .main-container {
+      max-width: 90vw;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 10px;
+    }
+
+    .series-header {
+      margin-bottom: 20px;
+    }
+
+    .series-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .series-meta {
+      display: flex;
+      gap: 20px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .series-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .series-meta-item .tag {
+      background-color: var(--btn-color);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .content-wrapper {
+      display: flex;
+      gap: 25px;
+    }
+
+    .left-section {
+      flex: 1.5;
+    }
+
+    .video-player-container {
+      background-color: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .video-player {
+      width: 100%;
+      height: 450px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .video-placeholder {
+      text-align: center;
+      color: #888;
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+
+    .video-controls {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .play-btn {
+      width: 32px;
+      height: 32px;
+      background-color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .volume-btn {
+      color: white;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background-color: #444;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .progress-filled {
+      width: 45%;
+      height: 100%;
+      background-color: var(--btn-color);
+      border-radius: 2px;
+    }
+
+    .time-display {
+      color: white;
+      font-size: 12px;
+    }
+
+    .fullscreen-btn {
+      color: white;
+      cursor: pointer;
+    }
+
+    .episode-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 15px;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .switch-btn {
+      padding: 8px 20px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+
+    .switch-btn:hover:not(:disabled) {
+      background-color: #f0f0f0;
+    }
+
+    .switch-btn:disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .episode-info {
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .episode-info .current {
+      font-weight: 600;
+      color: var(--btn-color);
+    }
+
+
+
+    .qa-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .qa-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .qa-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .qa-tag {
+      background-color: var(--btn-color);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+    }
+
+    .right-section {
+      width: 480px;
+      flex-shrink: 0;
+    }
+
+    .rating-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .rating-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .rating-score {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 8px;
+      letter-spacing: 0px;
+    }
+
+    .rating-score .rating-label {
+      color: var(--text-secondary);
+      font-weight: normal;
+      font-size: 12px;
+    }
+
+    .rating-score .score {
+      color: var(--btn-color);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .rating-score .score-stars {
+      color: var(--btn-color);
+      font-size: 18px;
+      margin-left: 4px;
+    }
+
+    .rating-score .rating-count {
+      color: #999;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 4px;
+    }
+
+    .rating-stars {
+      color: var(--btn-color);
+    }
+
+    .rating-count {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .my-rating {
+      color: var(--text-secondary);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      width: 172px;
+    }
+
+    .my-rating > span {
+      font-size: 12px;
+    }
+
+    .my-rating a {
+      color: var(--btn-color);
+      text-decoration: none;
+    }
+
+    .inline-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .inline-star {
+      font-size: 18px;
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.2s;
+    }
+
+    .inline-star:hover {
+      color: var(--btn-color);
+      transform: scale(1.15);
+    }
+
+    .rated-text {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .rated-text #ratedScore {
+      color: var(--btn-color);
+      font-weight: 600;
+    }
+
+    .edit-btn {
+      width: 22px;
+      height: 22px;
+      background-color: transparent;
+      border: none;
+      color: var(--btn-color);
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      padding: 0;
+      opacity: 0.7;
+    }
+
+    .edit-btn:hover {
+      color: var(--btn-color);
+      transform: scale(1.15);
+      opacity: 1;
+    }
+
+    .rating-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+
+    .rating-actions .action-btn:nth-child(1) {
+      border-width: 0px;
+      border-style: solid;
+      border-color: #d6d6d6;
+      background-color: #fbf4f4;
+    }
+
+    .rating-actions .action-btn:nth-child(2) {
+      border-width: 0px;
+      border-style: solid;
+      border-color: #000000;
+      background-color: #f9f5f5;
+    }
+
+    .episode-list {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .episode-item {
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .episode-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .episode-item.active {
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    .episode-name {
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .episode-status {
+      font-size: 12px;
+    }
+
+    .episode-status.completed {
+      color: #0369a1;
+    }
+
+    .episode-status.in-progress {
+      color: #d97706;
+    }
+
+    .course-intro-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .course-intro-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .course-intro-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .expand-btn {
+      display: block;
+      text-align: right;
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .comments-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .comments-header {
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .comments-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .comment-input-area {
+      margin-bottom: 25px;
+    }
+
+    .rating-input-stars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .rating-input-stars .rating-label {
+      font-size: 14px;
+      color: var(--btn-color);
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 2px;
+    }
+
+    .star-rating .star {
+      font-size: 18px;
+      color: #ddd;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .star-rating .star:hover {
+      color: var(--btn-color);
+      transform: scale(1.15);
+    }
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .comment-item {
+    }
+
+    .comment-content {
+      flex: 1;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .comment-author {
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .comment-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .comment-rating .rating-stars {
+      color: var(--btn-color);
+      font-size: 14px;
+    }
+
+    .comment-rating .rating-score {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .comment-date {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .comment-text {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .comment-actions,
+    .reply-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .like-btn,
+    .reply-btn,
+    .like-reply-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .like-btn:hover,
+    .reply-btn:hover,
+    .like-reply-btn:hover {
+      color: var(--btn-color);
+    }
+
+    .like-btn.liked {
+      color: var(--btn-color);
+    }
+
+    .like-btn .like-icon,
+    .like-reply-btn .like-icon {
+      font-size: 16px;
+      color: #999 !important;
+    }
+
+    .liked .like-icon {
+      color: var(--btn-color) !important;
+    }
+
+    .like-count {
+      font-weight: 500;
+    }
+
+    .reply-icon {
+      font-size: 14px;
+    }
+
+    .delete-reply-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: #999;
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .delete-reply-btn:hover {
+      color: #ff4d4f;
+    }
+
+    .delete-icon {
+      font-size: 14px;
+    }
+
+    .replies-container {
+      margin-top: 12px;
+      padding-left: 12px;
+      border-left: 2px solid var(--border-color);
+    }
+
+    .reply-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px 0;
+    }
+
+    .reply-content {
+      flex: 1;
+    }
+
+    .reply-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .reply-author {
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .reply-date {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .reply-text {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .reply-input-area {
+      margin-top: 12px;
+      padding: 12px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .reply-textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .reply-textarea:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .reply-actions-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .cancel-reply-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .submit-reply-btn {
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .submit-reply-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    @media (max-width: 1024px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+
+      .right-section {
+        width: 100%;
+      }
+    }
+
+    /* 评价弹窗样式 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .rating-modal {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .modal-stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .modal-star {
+      font-size: 32px;
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.2s;
+    }
+
+    .modal-star:hover,
+    .modal-star.active {
+      color: var(--btn-color);
+      transform: scale(1.1);
+    }
+
+    .modal-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 20px;
+      font-family: inherit;
+    }
+
+    .modal-textarea:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .modal-btn {
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-btn-cancel {
+      background-color: #f5f5f5;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .modal-btn-cancel:hover {
+      background-color: #e8e8e8;
+    }
+
+    .modal-btn-submit {
+      background-color: var(--btn-color);
+      border: none;
+      color: white;
+    }
+
+    .modal-btn-submit:hover {
+      background-color: var(--btn-hover);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent&image_size=square" alt="Logo">
+          <span>人周一课</span>
+        </div>
+        <div class="nav-links">
+          <a href="#">我的学习</a>
+          <a href="courses.html" class="active">课程</a>
+          <a href="#">开发</a>
+          <a href="#">课外学习</a>
+          <a href="#">心愿墙</a>
+          <a href="#">团队学习</a>
+          <a href="#">后台管理</a>
+          <a href="#">完美加速器</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20user%20avatar%20icon&image_size=square" alt="User">
+          <span>赵静 112150</span>
+          <span class="logout">登出</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div class="series-header">
+      <h1 class="series-title">手游商业化运营套路分享</h1>
+      <div class="series-meta">
+        <div class="series-meta-item">发布时间：2020-11-13</div>
+        <div class="series-meta-item">播放量：7937次</div>
+        <div class="series-meta-item"><span class="tag">运营</span></div>
+        <div class="series-meta-item">❤️ 收藏</div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="left-section">
+        <div class="video-player-container">
+          <div class="video-player">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=video%20lecture%20classroom%20presentation%20with%20audience&image_size=landscape_16_9" alt="视频播放区" class="video-placeholder">
+          </div>
+          <div class="video-controls">
+            <button class="play-btn">▶</button>
+            <span class="volume-btn">🔊</span>
+            <div class="progress-bar">
+              <div class="progress-filled"></div>
+            </div>
+            <span class="time-display">21:33</span>
+            <span class="fullscreen-btn">⛶</span>
+          </div>
+        </div>
+
+        <div class="episode-switcher">
+          <button class="switch-btn" disabled>上一集</button>
+          <div class="episode-info">
+            <span class="current">P1 手游商业化运营-1</span> / 共4集
+          </div>
+          <button class="switch-btn">下一集</button>
+        </div>
+
+
+
+        <div class="comments-section">
+          <div class="comment-input-area">
+            <div class="rating-input-stars">
+              <span class="rating-label">给课程评分：</span>
+              <span class="inline-stars" id="commentsRatingStars">
+                <span class="inline-star" data-rating="1">★</span>
+                <span class="inline-star" data-rating="2">★</span>
+                <span class="inline-star" data-rating="3">★</span>
+                <span class="inline-star" data-rating="4">★</span>
+                <span class="inline-star" data-rating="5">★</span>
+              </span>
+              <span class="rated-text" id="commentsRatedText" style="display: none;">已评分（<span id="commentsRatedScore">5.0</span>）</span>
+              <span class="edit-rating" id="commentsEditRating" style="display: none; cursor: pointer; color: var(--btn-color); opacity: 0.7; margin-left: 8px; font-size: 16px;" title="编辑评分">✎</span>
+            </div>
+          </div>
+
+          <div class="comments-list" id="commentsList">
+            <div class="comment-item">
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">匿名用户</span>
+                  <span class="comment-rating">
+                    <span class="rating-stars">★★★★★</span>
+                  </span>
+                  <span class="comment-date">2026-05-20</span>
+                </div>
+                <div class="comment-text">非常实用的课程，讲解清晰，案例丰富，学习后收获很大！</div>
+                <div class="comment-actions">
+                  <button class="like-btn" data-comment-id="1">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">128</span>
+                  </button>
+                  <button class="reply-btn" data-comment-id="1">
+                    <span class="reply-icon">💬</span>
+                    <span>回复</span>
+                  </button>
+                </div>
+                
+                <div class="replies-container">
+                  <div class="reply-item">
+                    <div class="reply-content">
+                      <div class="reply-header">
+                        <span class="reply-author">匿名用户</span>
+                        <span class="reply-date">2026-05-21</span>
+                      </div>
+                      <div class="reply-text">同意！我也觉得很好</div>
+                      <div class="reply-actions">
+                        <button class="like-reply-btn" data-reply-id="1">
+                          <span class="like-icon">♥</span>
+                          <span class="like-count">35</span>
+                        </button>
+                        <button class="delete-reply-btn" data-reply-id="1">
+                          <span class="delete-icon">🗑️</span>
+                          <span>删除</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-item">
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">匿名用户</span>
+                  <span class="comment-rating">
+                    <span class="rating-stars">★★★★☆</span>
+                  </span>
+                  <span class="comment-date">2026-05-15</span>
+                </div>
+                <div class="comment-text">课程内容很专业，希望后续能有更多实操案例分享。</div>
+                <div class="comment-actions">
+                  <button class="like-btn" data-comment-id="2">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">89</span>
+                  </button>
+                  <button class="reply-btn" data-comment-id="2">
+                    <span class="reply-icon">💬</span>
+                    <span>回复</span>
+                  </button>
+                </div>
+                
+                <div class="replies-container">
+                  <div class="reply-item">
+                    <div class="reply-content">
+                      <div class="reply-header">
+                        <span class="reply-author">匿名用户</span>
+                        <span class="reply-date">2026-05-16</span>
+                      </div>
+                      <div class="reply-text">同意，希望能有更多实战案例！</div>
+                      <div class="reply-actions">
+                        <button class="like-reply-btn" data-reply-id="2">
+                          <span class="like-icon">♥</span>
+                          <span class="like-count">23</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-item">
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">匿名用户</span>
+                  <span class="comment-rating">
+                    <span class="rating-stars">★★★★★</span>
+                  </span>
+                  <span class="comment-date">2026-05-10</span>
+                </div>
+                <div class="comment-text">老师讲解很透彻，知识点覆盖全面，非常推荐！</div>
+                <div class="comment-actions">
+                  <button class="like-btn" data-comment-id="3">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">156</span>
+                  </button>
+                  <button class="reply-btn" data-comment-id="3">
+                    <span class="reply-icon">💬</span>
+                    <span>回复</span>
+                  </button>
+                </div>
+                
+                <div class="replies-container">
+                  <div class="reply-item">
+                    <div class="reply-content">
+                      <div class="reply-header">
+                        <span class="reply-author">匿名用户</span>
+                        <span class="reply-date">2026-05-11</span>
+                      </div>
+                      <div class="reply-text">确实，收获很大！</div>
+                      <div class="reply-actions">
+                        <button class="like-reply-btn" data-reply-id="3">
+                          <span class="like-icon">♥</span>
+                          <span class="like-count">45</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-item">
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">匿名用户</span>
+                  <span class="comment-rating">
+                    <span class="rating-stars">★★★☆☆</span>
+                  </span>
+                  <span class="comment-date">2026-05-08</span>
+                </div>
+                <div class="comment-text">内容不错，但视频清晰度有待提高。</div>
+                <div class="comment-actions">
+                  <button class="like-btn" data-comment-id="4">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">42</span>
+                  </button>
+                  <button class="reply-btn" data-comment-id="4">
+                    <span class="reply-icon">💬</span>
+                    <span>回复</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="rating-card">
+          <div class="rating-header">
+            <div>
+              <div class="rating-score">
+                <span class="rating-label">评分</span>：<span class="score">5.0</span>
+                <span class="score-stars">★★★★★</span>
+                <span class="rating-count">(34人)</span>
+              </div>
+              <div class="my-rating">
+                <span>我的评分：</span>
+                <div class="inline-stars" id="inlineStars">
+                  <span class="inline-star" data-rating="1">☆</span>
+                  <span class="inline-star" data-rating="2">☆</span>
+                  <span class="inline-star" data-rating="3">☆</span>
+                  <span class="inline-star" data-rating="4">☆</span>
+                  <span class="inline-star" data-rating="5">☆</span>
+                </div>
+                <span class="rated-text" id="ratedText" style="display: none;">已评分（<span id="ratedScore">0.0</span>）</span>
+                <button class="edit-btn" id="editRating" style="display: none;">✎</button>
+              </div>
+            </div>
+            <div class="rating-actions">
+              <button class="action-btn">🔄</button>
+              <button class="action-btn">☆</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="episode-list">
+          <div class="episode-item active">
+            <div class="episode-name">P1 手游商业化运营-1</div>
+            <div class="episode-status in-progress">进度条拖拽</div>
+          </div>
+          <div class="episode-item">
+            <div class="episode-name">P2 手游商业化运营-2</div>
+            <div class="episode-status completed">已学完</div>
+          </div>
+          <div class="episode-item">
+            <div class="episode-name">P3 手游商业化运营-3</div>
+            <div class="episode-status in-progress">进度条拖拽</div>
+          </div>
+          <div class="episode-item">
+            <div class="episode-name">P4 手游商业化运营-4</div>
+            <div class="episode-status completed">已学完</div>
+          </div>
+        </div>
+
+        <div class="course-intro-card">
+          <h4 class="course-intro-title">课程简介</h4>
+          <p class="course-intro-text">1. 解析手游商业化运营的核心策略和实践技巧。<br>2. 讲解商业化运营的定义、常见的运营套路、设计套路时需考虑的因素，以及提升运营效果的建议。</p>
+          <span class="expand-btn">更多 ▽</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 评价弹窗 -->
+  <div class="modal-overlay" id="ratingModal">
+    <div class="rating-modal">
+      <h3 class="modal-title">为课程评分</h3>
+      <div class="modal-stars" id="modalStars">
+        <span class="modal-star" data-rating="1">★</span>
+        <span class="modal-star" data-rating="2">★</span>
+        <span class="modal-star" data-rating="3">★</span>
+        <span class="modal-star" data-rating="4">★</span>
+        <span class="modal-star" data-rating="5">★</span>
+      </div>
+      <textarea class="modal-textarea" id="ratingText" placeholder="写下你的评价..."></textarea>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" id="cancelBtn">取消</button>
+        <button class="modal-btn modal-btn-submit" id="submitBtn">提交</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 弹窗相关变量
+    const modal = document.getElementById('ratingModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const modalStars = document.getElementById('modalStars');
+    const ratingText = document.getElementById('ratingText');
+    const inlineStars = document.getElementById('inlineStars');
+    const ratedText = document.getElementById('ratedText');
+    const ratedScore = document.getElementById('ratedScore');
+    const editRating = document.getElementById('editRating');
+    const inlineStarElements = inlineStars.querySelectorAll('.inline-star');
+    
+    // 评论区评分相关变量
+    const commentsRatingStarsElement = document.getElementById('commentsRatingStars');
+    const commentsRatedText = document.getElementById('commentsRatedText');
+    const commentsRatedScore = document.getElementById('commentsRatedScore');
+    const commentsEditRating = document.getElementById('commentsEditRating');
+    
+    let currentRating = 0; // 默认未评分
+    let hasRated = false; // 是否已评分
+
+    // 打开弹窗
+    function openModal(rating = 5) {
+      currentRating = rating;
+      modal.classList.add('active');
+      setRating(currentRating);
+      ratingText.focus();
+    }
+
+    // 内联星星悬停效果
+    inlineStarElements.forEach(star => {
+      star.addEventListener('mouseenter', () => {
+        if (!hasRated) {
+          const rating = parseInt(star.dataset.rating);
+          highlightInlineStars(rating);
+        }
+      });
+
+      star.addEventListener('mouseleave', () => {
+        if (!hasRated) {
+          resetInlineStars();
+        } else {
+          showMyRating(currentRating);
+        }
+      });
+
+      star.addEventListener('click', () => {
+        if (!hasRated) {
+          const rating = parseInt(star.dataset.rating);
+          openModal(rating);
+        }
+      });
+    });
+
+    // 编辑图标点击事件
+    editRating.addEventListener('click', () => {
+      openModal(currentRating);
+    });
+
+    // 高亮内联星星
+    function highlightInlineStars(rating) {
+      inlineStarElements.forEach((star, index) => {
+        if (index < rating) {
+          star.textContent = '★';
+          star.style.color = '#f97316';
+        } else {
+          star.textContent = '☆';
+          star.style.color = '#ddd';
+        }
+      });
+    }
+
+    // 重置内联星星
+    function resetInlineStars() {
+      inlineStarElements.forEach((star) => {
+        star.textContent = '☆';
+        star.style.color = '#ddd';
+      });
+    }
+
+    // 显示我的评分
+    function showMyRating(rating) {
+      inlineStarElements.forEach((star, index) => {
+        if (index < rating) {
+          star.textContent = '★';
+          star.style.color = '#ccc';
+        } else {
+          star.textContent = '☆';
+          star.style.color = '#e8e8e8';
+        }
+      });
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    cancelBtn.addEventListener('click', closeModal);
+    
+    // 点击遮罩层关闭
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // 星级选择
+    const stars = modalStars.querySelectorAll('.modal-star');
+    
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const rating = parseInt(star.dataset.rating);
+        currentRating = rating;
+        setRating(rating);
+      });
+
+      // 悬停效果
+      star.addEventListener('mouseenter', () => {
+        const rating = parseInt(star.dataset.rating);
+        highlightStars(rating);
+      });
+
+      star.addEventListener('mouseleave', () => {
+        setRating(currentRating);
+      });
+    });
+
+    // 设置星级
+    function setRating(rating) {
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+
+    // 高亮星级（悬停用）
+    function highlightStars(rating) {
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+
+    // 提交评价
+    submitBtn.addEventListener('click', () => {
+      const text = ratingText.value.trim();
+      alert(`感谢您的${currentRating}星评价！\n评价内容：${text || '（无）'}`);
+      
+      // 标记已评分并显示评分结果
+      hasRated = true;
+      
+      // 隐藏星星，显示已评分文字和编辑按钮（右上角）
+      inlineStars.style.display = 'none';
+      ratedScore.textContent = currentRating + '.0';
+      ratedText.style.display = 'inline';
+      editRating.style.display = 'inline';
+      
+      // 隐藏星星，显示已评分文字和编辑按钮（评论区）
+      commentsRatingStarsElement.style.display = 'none';
+      commentsRatedScore.textContent = currentRating + '.0';
+      commentsRatedText.style.display = 'inline';
+      commentsEditRating.style.display = 'inline';
+      
+      closeModal();
+      ratingText.value = '';
+    });
+
+    // 默认选中5星
+    setRating(5);
+
+    // 评论区评分星星点击打开弹窗
+    const commentsRatingStars = document.querySelectorAll('#commentsRatingStars .inline-star');
+    commentsRatingStars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.dataset.rating);
+        currentRating = rating;
+        setRating(rating);
+        openModal();
+      });
+
+      star.addEventListener('mouseenter', function() {
+        const rating = parseInt(this.dataset.rating);
+        highlightStars(rating);
+      });
+
+      star.addEventListener('mouseleave', function() {
+        setRating(currentRating);
+      });
+    });
+
+    // 评论区编辑评分按钮点击事件
+    commentsEditRating.addEventListener('click', function() {
+      const rating = parseFloat(commentsRatedScore.textContent);
+      currentRating = rating;
+      setRating(rating);
+      openModal();
+    });
+
+    // ==================== 评论区交互 ====================
+    // 点赞交互
+    document.querySelectorAll('.like-btn, .like-reply-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const likeCount = this.querySelector('.like-count');
+        const isLiked = this.classList.contains('liked');
+        
+        if (isLiked) {
+          // 取消点赞
+          this.classList.remove('liked');
+          likeCount.textContent = parseInt(likeCount.textContent) - 1;
+        } else {
+          // 点赞
+          this.classList.add('liked');
+          likeCount.textContent = parseInt(likeCount.textContent) + 1;
+        }
+      });
+    });
+
+    // 回复交互
+    document.querySelectorAll('.reply-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const commentId = this.dataset.commentId;
+        const commentContent = this.closest('.comment-content');
+        let replyArea = commentContent.querySelector('.reply-input-area');
+        
+        if (!replyArea) {
+          // 创建回复输入框
+          replyArea = document.createElement('div');
+          replyArea.className = 'reply-input-area';
+          replyArea.innerHTML = `
+            <textarea class="reply-textarea" placeholder="写下你的回复..."></textarea>
+            <div class="reply-actions-buttons">
+              <button class="cancel-reply-btn">取消</button>
+              <button class="submit-reply-btn">发布回复</button>
+            </div>
+          `;
+          
+          const repliesContainer = commentContent.querySelector('.replies-container');
+          if (repliesContainer) {
+            repliesContainer.prepend(replyArea);
+          } else {
+            // 如果没有replies容器，创建一个
+            const container = document.createElement('div');
+            container.className = 'replies-container';
+            container.appendChild(replyArea);
+            commentContent.appendChild(container);
+          }
+
+          // 绑定取消按钮事件
+          const cancelBtn = replyArea.querySelector('.cancel-reply-btn');
+          cancelBtn.addEventListener('click', () => {
+            replyArea.remove();
+          });
+
+          // 绑定提交按钮事件
+          const submitBtn = replyArea.querySelector('.submit-reply-btn');
+          const textarea = replyArea.querySelector('.reply-textarea');
+          
+          submitBtn.addEventListener('click', () => {
+            const replyText = textarea.value.trim();
+            if (!replyText) {
+              alert('请输入回复内容！');
+              return;
+            }
+
+            // 创建回复元素
+            const replyId = Date.now();
+            const replyHTML = `
+              <div class="reply-item" data-reply-id="${replyId}">
+                <div class="reply-content">
+                  <div class="reply-header">
+                    <span class="reply-author">匿名用户</span>
+                    <span class="reply-date">${getCurrentDate()}</span>
+                  </div>
+                  <div class="reply-text">${replyText}</div>
+                  <div class="reply-actions">
+                    <button class="like-reply-btn" data-reply-id="${replyId}">
+                      <span class="like-icon">♥</span>
+                      <span class="like-count">0</span>
+                    </button>
+                    <button class="delete-reply-btn" data-reply-id="${replyId}">
+                      <span class="delete-icon">🗑️</span>
+                      <span>删除</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            replyArea.insertAdjacentHTML('afterend', replyHTML);
+            replyArea.remove();
+
+            // 绑定新回复的点赞事件
+            const newReplyBtn = commentContent.querySelector(`[data-reply-id="${replyId}"] .like-reply-btn`);
+            newReplyBtn.addEventListener('click', function() {
+              const icon = this.querySelector('.like-icon');
+              const count = this.querySelector('.like-count');
+              const liked = this.classList.contains('liked');
+              
+              if (liked) {
+                this.classList.remove('liked');
+                icon.textContent = '👍';
+                count.textContent = parseInt(count.textContent) - 1;
+              } else {
+                this.classList.add('liked');
+                icon.textContent = '❤️';
+                count.textContent = parseInt(count.textContent) + 1;
+              }
+            });
+          });
+
+          textarea.focus();
+        } else {
+          // 如果已有回复框，移除它
+          replyArea.remove();
+        }
+      });
+    });
+
+    // 删除回复交互
+    document.querySelectorAll('.delete-reply-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (confirm('确定要删除这条回复吗？')) {
+          const replyItem = this.closest('.reply-item');
+          replyItem.remove();
+        }
+      });
+    });
+
+    // 获取当前日期
+    function getCurrentDate() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+  </script>
+</body>
+</html>
