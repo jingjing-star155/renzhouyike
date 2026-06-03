@@ -72,7 +72,7 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -86,11 +86,14 @@
     }
 
     .topic-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-hover);
     }
 
-    
+    .topic-card.highlight {
+      border-left-color: var(--accent-color);
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, rgba(30, 64, 175, 0.03) 100%);
+    }
 
     .topic-header {
       display: flex;
@@ -112,12 +115,21 @@
       font-size: 0.9rem;
     }
 
-    
+    .topic-card.highlight .topic-number {
+      background: linear-gradient(135deg, var(--accent-color), #fb923c);
+    }
 
     .topic-title {
       font-size: 1.3rem;
       font-weight: 600;
       color: var(--text-primary);
+    }
+
+    .topic-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      margin-left: 44px;
     }
 
     .topic-purpose {
@@ -165,7 +177,7 @@
     }
 
     .optimizations-section {
-      margin-top: 20px;
+      margin-top: 16px;
     }
 
     .optimizations-section strong {
@@ -207,6 +219,21 @@
       line-height: 1.5;
     }
 
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .category-item {
+      background: rgba(30, 64, 175, 0.06);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
     .footer {
       text-align: center;
       margin-top: 60px;
@@ -224,6 +251,10 @@
       .header h1 {
         font-size: 1.8rem;
       }
+
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -235,29 +266,78 @@
     </header>
 
     <div class="topics-grid">
-      <div class="topic-card">
+      <div class="topic-card highlight">
         <div class="topic-header">
           <span class="topic-number">01</span>
-          <h2 class="topic-title">提高评价率</h2>
+          <h2 class="topic-title">首页推荐优化</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>提升课程曝光率和用户点击率，优化用户学习路径，增强平台活跃度</span>
+            </li>
+          </ul>
         </div>
         
-        <div class="topic-purpose">
-          <strong>目的</strong>
-          <p>希望通过评价量筛选出好课</p>
-        </div>
-
-
         <div class="optimizations-section">
-          <strong>优化方向</strong>
+          <strong>需求点</strong>
           <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>主题推荐：每周更新，每期3-7门课程，选择大家感兴趣的话题（如二游市场、世界观赏析、GDC专题等），作为运营手段推荐</span>
+              <span style="color: #999999; font-style: italic; font-size: 0.85rem; display: block; margin-top: 4px;">* 备注：推荐课程较多，需要突出占位</span>
+            </li>
+            <li class="optimization-item">
+              <span>系列课推荐：将系列课切分成3-5讲进行分享（如世界服饰系列课程之民族服饰）</span>
+            </li>
+            <li class="optimization-item">
+              <span>猜你喜欢：展示4-5个课程，算法建议：2个本专业类别 + 2个最近观看类别 + 1个通用类别，每次进入刷新</span>
+            </li>
+            <li class="optimization-item">
+              <span>学习中课程：展示数量较少，1-3个</span>
+            </li>
+            <li class="optimization-item">
+              <a href="courses.html" style="color: var(--accent-color); text-decoration: underline; font-size: 0.95rem; line-height: 1.5;">查看产品原型</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="topic-card highlight">
+        <div class="topic-header">
+          <span class="topic-number">02</span>
+          <h2 class="topic-title">评分功能优化</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>提高课程评价率，通过评价数据发现优质课程</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>核心功能</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>观看任何时间点可以评分，评分用户可随时修改</span>
+            </li>
+            <li class="optimization-item">
+              <span>评分UI显著一些，最好有交互，便于提醒大家打分</span>
+            </li>
+            <li class="optimization-item">
+              <span>评分题目：请为本课程1-5打分（1为不满意，5为满意）</span>
+            </li>
             <li class="optimization-item">
               <span>打分入口优化：增加woa，与直播相关的视频课，定期提醒，系列课/关联课的评价提示或共用</span>
             </li>
             <li class="optimization-item">
-              <span>打分条件放宽：如开始看课程就提示打分</span>
-            </li>
-            <li class="optimization-item">
-              <span>打分操作优化：一键评分、简化题目、增加提示词、可修改评分</span>
+              <span>打分条件放宽：如开始看课程就提示打分；打分操作优化：一键评分、简化题目、增加提示词</span>
             </li>
             <li class="optimization-item">
               <span>增加“评分结果”露出，提升打分可能性</span>
@@ -266,54 +346,195 @@
         </div>
       </div>
 
-      <div class="topic-card">
-        <div class="topic-header">
-          <span class="topic-number">02</span>
-          <h2 class="topic-title">课程搜索分类</h2>
-        </div>
-        
-        <div class="optimizations-section">
-          <strong>优化方向</strong>
-          <ul class="optimization-list">
-            <li class="optimization-item">
-              <span>增加分类标签层级</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="topic-card">
+      <div class="topic-card highlight">
         <div class="topic-header">
           <span class="topic-number">03</span>
-          <h2 class="topic-title">系列课程集合</h2>
+          <h2 class="topic-title">评论功能改版</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>促进学员互动交流，推动课程质量提升</span>
+            </li>
+          </ul>
         </div>
         
         <div class="optimizations-section">
-          <strong>优化方向</strong>
+          <strong>评论功能</strong>
           <ul class="optimization-list">
             <li class="optimization-item">
-              <span>便于查看系列课，方便切换上下集</span>
+              <span>观看视频或直播时全程可评论，评论用户可随时修改</span>
+            </li>
+            <li class="optimization-item">
+              <span>针对每条评论其他用户可点赞，点赞数显现；支持对评论进行再评论</span>
+            </li>
+            <li class="optimization-item">
+              <span>评论展示顺序默认为最新；评论位置替换原课程Q&A位置</span>
+            </li>
+            <li class="optimization-item">
+              <span>邀请评论示例话术：感谢您选择这门课程，您对课程的评论是对老师和我们最大的鼓励，也能帮助更多同学提供宝贵参考</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>论坛留言板</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>提问功能改为论坛留言板形式，支持学员间交流讨论</span>
+            </li>
+            <li class="optimization-item">
+              <span>用户评论名称展示可选择实名、花名、匿名（如同加速器）</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>数据与运营</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>原有评论迁移，评论名显示为匿名</span>
+            </li>
+            <li class="optimization-item">
+              <span>相关数据后台展现，运营基于数据统计进行用户物质激励</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="topic-card">
+      <div class="topic-card highlight">
         <div class="topic-header">
           <span class="topic-number">04</span>
-          <h2 class="topic-title">提问功能更改</h2>
+          <h2 class="topic-title">搜索结果排序优化</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>优化搜索和分类结果的排序策略，提升用户查找课程的效率和精准度</span>
+            </li>
+          </ul>
         </div>
         
         <div class="optimizations-section">
-          <strong>优化方向</strong>
+          <strong>排序规则</strong>
           <ul class="optimization-list">
             <li class="optimization-item">
-              <span>变成一个"论坛留言板"的功能</span>
+              <span>解决搜索或点击分类后展示的课程排序问题</span>
+            </li>
+            <li class="optimization-item">
+              <span>可加播放量排序或重新设计默认排序，建议优先前20%课程及点击量高课程</span>
+            </li>
+            <li class="optimization-item">
+              <span>优先展示：系列课程 > 单课</span>
             </li>
           </ul>
         </div>
       </div>
-    </div>
+
+      <div class="topic-card highlight">
+        <div class="topic-header">
+          <span class="topic-number">05</span>
+          <h2 class="topic-title">系列课程合并</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>优化系列课程的展示和播放体验，提升用户学习连贯性和完成率</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>功能需求</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>将系列课程合并到一个展示里（如PS课程60门，只展示最后一门PS-60讲）</span>
+            </li>
+            <li class="optimization-item">
+              <span>搜索后系列课也是合并展示</span>
+            </li>
+            <li class="optimization-item">
+              <span>系列课看完第一讲后，可自动播放下一讲</span>
+            </li>
+            <li class="optimization-item">
+              <span>展示课程大纲（课程题目及分段视频题目）</span>
+            </li>
+            <li class="optimization-item">
+              <span>从大纲可以进入任意一讲</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="topic-card highlight">
+        <div class="topic-header">
+          <span class="topic-number">06</span>
+          <h2 class="topic-title">增加一层课程分类</h2>
+        </div>
+        <p class="topic-subtitle">重点需求</p>
+        
+        <div class="optimizations-section">
+          <strong>产品目标</strong>
+          <ul class="optimization-list">
+            <li class="optimization-item">
+              <span>程序/美术等课程较多，细化分类以帮助用户快速定位感兴趣的课程内容</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="optimizations-section">
+          <strong>程序分类</strong>
+          <div class="category-grid">
+            <div class="category-item">客户端开发</div>
+            <div class="category-item">服务端开发</div>
+            <div class="category-item">引擎与底层</div>
+            <div class="category-item">图形与渲染</div>
+            <div class="category-item">技术美术</div>
+            <div class="category-item">性能优化</div>
+            <div class="category-item">GamePlay &工具</div>
+            <div class="category-item">AI技术</div>
+            <div class="category-item">开发与运维</div>
+            <div class="category-item">网络安全</div>
+            <div class="category-item">物理&动作</div>
+            <div class="category-item">音频</div>
+            <div class="category-item">开发经验</div>
+            <div class="category-item">通用技术</div>
+            <div class="category-item">生产管线与工具</div>
+            <div class="category-item">其他</div>
+          </div>
+        </div>
+
+        <div class="optimizations-section">
+          <strong>美术分类</strong>
+          <div class="category-grid">
+            <div class="category-item">匹配模块</div>
+            <div class="category-item">2D场景</div>
+            <div class="category-item">2D角色</div>
+            <div class="category-item">3D场景地编</div>
+            <div class="category-item">3D场景模型</div>
+            <div class="category-item">3D角色模型</div>
+            <div class="category-item">3D动作</div>
+            <div class="category-item">特效</div>
+            <div class="category-item">游戏美术概述</div>
+            <div class="category-item">美术思维提升</div>
+            <div class="category-item">美术风格</div>
+            <div class="category-item">世界观</div>
+            <div class="category-item">项目制作经验分享</div>
+            <div class="category-item">美术素养</div>
+          </div>
+        </div>
+      </div>
+
+      
 
     <footer class="footer">
       <p>© 2026 人周一课 | 需求汇总文档</p>
