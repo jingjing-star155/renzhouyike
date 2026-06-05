@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>人周一课 - 课程</title>
+  <title>人周一课 - 课程V2</title>
   <style>
     * {
       margin: 0;
@@ -122,12 +122,12 @@
 
     .search-section {
       background-color: var(--card-bg);
-      padding: 10px 10px;
+      padding: 10px 20px;
       border-bottom: 1px solid var(--border-color);
     }
 
     .search-content {
-      max-width: 90vw;
+      max-width: 1400px;
       width: 100%;
       margin: 0 auto;
       display: flex;
@@ -183,20 +183,21 @@
     }
 
     .main-content {
-      max-width: 90vw;
+      max-width: 1694px;
       width: 100%;
       margin: 0 auto;
-      padding: 15px 10px;
+      padding: 15px 20px;
       display: flex;
       gap: 15px;
     }
 
     .left-panel {
-      width: 35%;
+      width: 470px;
+      flex-shrink: 0;
       background-color: var(--card-bg);
       border-radius: 4px;
-      padding: 15px;
-      min-height: 300px;
+      padding: 12px;
+      height: 200px;
     }
 
     .category-filter {
@@ -208,21 +209,23 @@
     .category-row {
       display: flex;
       align-items: center;
+      flex-wrap: nowrap;
       gap: 8px;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .category-icon {
       width: 14px;
       height: 14px;
       flex-shrink: 0;
+      opacity: 0.6;
     }
 
     .category-name {
       font-weight: 600;
       color: var(--text-primary);
-      margin-right: 8px;
+      flex-shrink: 0;
     }
 
     .sub-category {
@@ -235,124 +238,428 @@
       color: var(--btn-color);
     }
 
-    .separator {
-      color: #cccccc;
-      margin: 0 6px;
-    }
-
     .center-panel {
       flex: 1;
-      background-color: var(--card-bg);
-      border-radius: 4px;
-      padding: 15px;
-    }
-
-    .right-panel {
-      width: 280px;
       display: flex;
       flex-direction: column;
       gap: 15px;
+      max-width: 600px;
     }
 
-    .panel-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .right-card {
-      background-color: var(--card-bg);
+    .recommend-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 4px;
-      padding: 15px;
-      min-height: 80px;
+      padding: 24px;
+      color: white;
+      position: relative;
+      height: 200px;
     }
 
-    .bottom-section {
-      max-width: 90vw;
-      width: 100%;
-      margin: 0 auto;
-      padding: 0 10px 20px;
+    .banner-header {
       display: flex;
-      gap: 15px;
-    }
-
-    .bottom-left {
-      flex: 1;
-      background-color: var(--card-bg);
-      border-radius: 4px;
-      padding: 15px;
-    }
-
-    .bottom-right {
-      width: 280px;
-      background-color: var(--card-bg);
-      border-radius: 4px;
-      padding: 15px;
-    }
-
-    .course-scroll {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-    }
-
-    .course-scroll::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .course-scroll::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 3px;
-    }
-
-    .course-scroll::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 3px;
-    }
-
-    .mini-course-card {
-      flex-shrink: 0;
-      width: 100px;
-      display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .banner-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .banner-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .banner-pagination {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pagination-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .pagination-dot.active {
+      background: white;
+    }
+
+    .banner-courses-wrapper {
+      overflow: hidden;
+    }
+
+    .banner-courses {
+      display: flex;
+      gap: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .banner-page {
+      display: flex;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .banner-page > div {
+      flex: 1;
+      min-width: calc((100% - 30px) / 3);
+    }
+
+    .banner-course-item {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .banner-course-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .banner-course-item .course-tag {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .banner-course-item .course-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .banner-course-item .course-desc {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .featured-courses {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .featured-card {
       cursor: pointer;
     }
 
-    .mini-course-card img {
-      width: 100px;
-      height: 70px;
-      border-radius: 4px;
+    .featured-card img {
+      width: 100%;
+      height: 80px;
       object-fit: cover;
+      border-radius: 4px;
       margin-bottom: 8px;
     }
 
-    .mini-course-card .course-name {
+    .featured-card .course-title {
       font-size: 12px;
       color: var(--text-primary);
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 100%;
     }
 
-    .placeholder {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: placeholder 1.5s infinite;
+    .series-banners {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .series-banner {
+      height: 90px;
       border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
     }
 
-    @keyframes placeholder {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+    .series-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .right-panel {
+      width: 869px;
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      height: 200px;
+    }
+
+    .study-card, .sales-card {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-card {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .right-course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .right-course-item {
+      cursor: pointer;
+    }
+
+    .right-course-item img {
+      max-width: 80px;
+      width: 100%;
+      height: 43px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .right-course-item .course-title {
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-section {
+      max-width: 1694px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 20px;
+    }
+
+    .offline-section {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--btn-color);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 15px;
+    }
+
+    .filter-tab {
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding-bottom: 8px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .filter-tab.active {
+      color: var(--btn-color);
+      border-bottom-color: var(--btn-color);
+    }
+
+    .offline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+
+    .offline-card {
+      background-color: #fafafa;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+
+    .offline-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .offline-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .offline-info {
+      padding: 10px;
+    }
+
+    .offline-title {
+      font-size: 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
+    }
+
+    .offline-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .offline-meta span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .offline-btn {
+      width: 100%;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .offline-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .video-section {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+
+    .video-card {
+      cursor: pointer;
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .video-title {
+      font-size: 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .video-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .video-footer span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .video-footer span:first-child::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .rating {
+      color: #f59e0b;
+      font-size: 11px;
+    }
+
+    @media (max-width: 1200px) {
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     @media (max-width: 1024px) {
@@ -375,12 +682,10 @@
         width: calc(50% - 7.5px);
       }
 
-      .bottom-section {
-        flex-direction: column;
-      }
-
-      .bottom-right {
-        width: 100%;
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
@@ -405,6 +710,28 @@
       .right-card {
         width: 100%;
       }
+
+      .banner-courses {
+        flex-direction: column;
+      }
+
+      .series-banners {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -413,7 +740,7 @@
     <div class="nav-content">
       <div class="nav-left">
         <div class="nav-logo">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent&image_size=square" alt="Logo">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent%20clean%20simple&image_size=square" alt="Logo">
           <span>人周一课</span>
         </div>
         <div class="nav-links">
@@ -428,7 +755,7 @@
       </div>
       <div class="nav-right">
         <div class="nav-user">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20user%20avatar%20icon&image_size=square" alt="User">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=professional%20user%20avatar%20icon%20simple&image_size=square" alt="User">
           <span>姓名123456</span>
           <span class="logout">退出</span>
         </div>
@@ -439,11 +766,11 @@
   <div class="search-section">
     <div class="search-content">
       <div class="search-box">
-        <input type="text" placeholder="搜索课程...">
+        <input type="text" placeholder="Gameplay & 工具">
       </div>
       <button class="search-btn">搜索</button>
       <div class="ai-search">
-        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20search%20icon%20blue%20color&image_size=square" alt="AI">
+        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=AI%20search%20icon%20blue%20color%20simple&image_size=square" alt="AI">
         <span>开启AI搜索</span>
       </div>
     </div>
@@ -453,118 +780,344 @@
     <div class="left-panel">
       <div class="category-filter">
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=code%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">◆</span>
           <span class="category-name">研发运营</span>
-          <span class="sub-category">策划</span><span class="separator">·</span>
-          <span class="sub-category">程序</span><span class="separator">·</span>
-          <span class="sub-category">美术</span><span class="separator">·</span>
-          <span class="sub-category">美</span><span class="separator">·</span>
-          <span class="sub-category">运维</span><span class="separator">·</span>
-          <span class="sub-category">测试</span><span class="separator">·</span>
-          <span class="sub-category">运营</span><span class="separator">·</span>
+          <span class="sub-category">策划</span>
+          <span class="sub-category">程序</span>
+          <span class="sub-category">美术</span>
+          <span class="sub-category">运维</span>
+          <span class="sub-category">测试</span>
+          <span class="sub-category">运营</span>
           <span class="sub-category">其他</span>
         </div>
 
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=briefcase%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">■</span>
           <span class="category-name">其他专业</span>
-          <span class="sub-category">市场</span><span class="separator">·</span>
-          <span class="sub-category">发行</span><span class="separator">·</span>
-          <span class="sub-category">产品</span><span class="separator">·</span>
-          <span class="sub-category">HR</span><span class="separator">·</span>
-          <span class="sub-category">财务经营</span><span class="separator">·</span>
-          <span class="sub-category">法律</span><span class="separator">·</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">发行</span>
+          <span class="sub-category">产品</span>
+          <span class="sub-category">HR</span>
+          <span class="sub-category">财务经营</span>
+          <span class="sub-category">法律</span>
           <span class="sub-category">其他</span>
         </div>
 
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=globe%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">●</span>
           <span class="category-name">行业概览</span>
-          <span class="sub-category">游戏</span><span class="separator">·</span>
-          <span class="sub-category">电竞</span><span class="separator">·</span>
-          <span class="sub-category">影视</span><span class="separator">·</span>
-          <span class="sub-category">动画</span><span class="separator">·</span>
-          <span class="sub-category">教育</span><span class="separator">·</span>
-          <span class="sub-category">互联网</span><span class="separator">·</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">电竞</span>
+          <span class="sub-category">影视</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">教育</span>
+          <span class="sub-category">互联网</span>
           <span class="sub-category">其他</span>
         </div>
 
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=skills%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">▲</span>
           <span class="category-name">综合技能</span>
-          <span class="sub-category">团队管理</span><span class="separator">·</span>
-          <span class="sub-category">自我提升</span><span class="separator">·</span>
-          <span class="sub-category">软件工具</span><span class="separator">·</span>
+          <span class="sub-category">团队管理</span>
+          <span class="sub-category">自我提升</span>
+          <span class="sub-category">软件工具</span>
+          <span class="sub-category">动画</span>
           <span class="sub-category">其他</span>
         </div>
 
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=science%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">▶</span>
           <span class="category-name">科学技术</span>
-          <span class="sub-category">AI</span><span class="separator">·</span>
+          <span class="sub-category">AI</span>
           <span class="sub-category">其他</span>
         </div>
 
         <div class="category-row">
-          <img class="category-icon" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=book%20icon%20grey%20color&image_size=square" alt="icon">
+          <span class="category-icon">◀</span>
           <span class="category-name">人文社科</span>
-          <span class="sub-category">文化题材</span><span class="separator">·</span>
-          <span class="sub-category">英语学习</span><span class="separator">·</span>
-          <span class="sub-category">日语学习</span><span class="separator">·</span>
+          <span class="sub-category">文化题材</span>
+          <span class="sub-category">英语学习</span>
           <span class="sub-category">其他</span>
         </div>
       </div>
     </div>
 
     <div class="center-panel">
-      <div class="panel-title">推荐课程</div>
-      <div class="placeholder" style="height: 220px;"></div>
+      <div class="recommend-banner">
+        <div class="banner-header">
+          <div class="banner-title">推荐好课</div>
+          <div class="banner-nav">
+            <button class="nav-btn" id="banner-prev" onclick="bannerPrev()">‹</button>
+            <div class="banner-pagination" id="banner-pagination">
+              <span class="pagination-dot active" onclick="goToBannerPage(0)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(1)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(2)"></span>
+            </div>
+            <button class="nav-btn" id="banner-next" onclick="bannerNext()">›</button>
+          </div>
+        </div>
+        <div class="banner-courses-wrapper">
+          <div class="banner-courses" id="banner-courses">
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">场景原画</div>
+                <div class="course-title">深度解析</div>
+                <div class="course-desc">从构图到光影的实战技巧</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">TA技术分享</div>
+                <div class="course-title">技术美术分享</div>
+                <div class="course-desc">Shader与渲染管线深度剖析</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">中国历史</div>
+                <div class="course-title">系列课程</div>
+                <div class="course-desc">从先秦到明清的历史全景</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">游戏策划</div>
+                <div class="course-title">数值设计精讲</div>
+                <div class="course-desc">从基础到进阶的数值体系搭建</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">程序开发</div>
+                <div class="course-title">性能优化实战</div>
+                <div class="course-desc">Unity性能优化全攻略</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">音乐制作</div>
+                <div class="course-title">游戏音效设计</div>
+                <div class="course-desc">打造沉浸式听觉体验</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">3D建模</div>
+                <div class="course-title">次世代角色制作</div>
+                <div class="course-desc">PBR材质与贴图全流程</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">运营推广</div>
+                <div class="course-title">买量策略分析</div>
+                <div class="course-desc">投放优化与效果追踪</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">产品设计</div>
+                <div class="course-title">用户体验设计</div>
+                <div class="course-desc">从用户研究到原型设计</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        let currentBannerPage = 0;
+        const totalBannerPages = 3;
+        
+        function updateBanner() {
+          const courses = document.getElementById('banner-courses');
+          const dots = document.querySelectorAll('.pagination-dot');
+          const prevBtn = document.getElementById('banner-prev');
+          const nextBtn = document.getElementById('banner-next');
+          
+          courses.style.transform = `translateX(-${currentBannerPage * 100}%)`;
+          
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentBannerPage);
+          });
+          
+          prevBtn.disabled = currentBannerPage === 0;
+          nextBtn.disabled = currentBannerPage === totalBannerPages - 1;
+        }
+        
+        function bannerPrev() {
+          if (currentBannerPage > 0) {
+            currentBannerPage--;
+            updateBanner();
+          }
+        }
+        
+        function bannerNext() {
+          if (currentBannerPage < totalBannerPages - 1) {
+            currentBannerPage++;
+            updateBanner();
+          }
+        }
+        
+        function goToBannerPage(page) {
+          currentBannerPage = page;
+          updateBanner();
+        }
+      </script>
     </div>
 
     <div class="right-panel">
-      <div class="right-card">
-        <div class="panel-title" style="margin-bottom: 10px;">系列课程推荐</div>
-        <div class="placeholder" style="height: 40px; margin-bottom: 10px;"></div>
+      <div class="right-card study-card">
+        <div class="panel-title">学习中</div>
+        <div class="right-course-grid">
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=1" alt="当AI开始动手">
+            <div class="course-title">当AI开始"动手"</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=2" alt="编程技能">
+            <div class="course-title">你可能需要一些SKILLS</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=3" alt="游戏设计">
+            <div class="course-title">游戏外观设计态度</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=4" alt="会议管理">
+            <div class="course-title">高效会议管理</div>
+          </div>
+        </div>
       </div>
-      <div class="right-card">
-        <div class="placeholder" style="height: 40px; margin-bottom: 10px;"></div>
-      </div>
-      <div class="right-card">
-        <div class="placeholder" style="height: 40px;"></div>
+      <div class="right-card sales-card">
+        <div class="panel-title">销售喜欢</div>
+        <div class="right-course-grid">
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=5" alt="电动汽车">
+            <div class="course-title">电动汽车与智能网联</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=6" alt="电竞比赛">
+            <div class="course-title">电竞赛事与社交流</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=7" alt="论语">
+            <div class="course-title">论语深度精讲</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://picsum.photos/80/43?random=8" alt="游戏运营">
+            <div class="course-title">游戏运营推广入门</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="bottom-section">
-    <div class="bottom-left">
-      <div class="panel-title">最近浏览</div>
-      <div class="course-scroll">
-        <div class="mini-course-card">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=programming%20course%20thumbnail&image_size=landscape_4_3" alt="课程1">
-          <div class="course-name">你可能需要一些Skil...5</div>
+    <div class="offline-section">
+      <div class="section-header">
+        <div class="section-title">线下课/直播课</div>
+        <div class="filter-tabs">
+          <span class="filter-tab active">全部</span>
+          <span class="filter-tab">已报名</span>
+          <span class="filter-tab">公司级</span>
+          <span class="filter-tab">部门级</span>
         </div>
-        <div class="mini-course-card">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=language%20learning%20course%20thumbnail&image_size=landscape_4_3" alt="课程2">
-          <div class="course-name">日语从零开始-60</div>
+      </div>
+      <div class="offline-grid">
+        <div class="offline-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=Node.js%20programming%20modern%20tech%20dark%20theme%20code&image_size=landscape_4_3" alt="课程">
+          <div class="offline-info">
+            <div class="offline-title">Nodejs实战-4</div>
+            <div class="offline-meta">
+              <span>2025-06-03 15:30-16:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
         </div>
-        <div class="mini-course-card">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=design%20course%20thumbnail&image_size=landscape_4_3" alt="课程3">
-          <div class="course-name">游戏UI界面设计基础...</div>
+        <div class="offline-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=architecture%20history%20documentary%20educational&image_size=landscape_4_3" alt="课程">
+          <div class="offline-info">
+            <div class="offline-title">世界建筑设计发展简史-14</div>
+            <div class="offline-meta">
+              <span>2025-06-04 17:00-18:00</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
         </div>
-        <div class="mini-course-card">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=development%20course%20thumbnail&image_size=landscape_4_3" alt="课程4">
-          <div class="course-name">iOS开发之OC与Swift...</div>
+        <div class="offline-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=economics%20finance%20business%20professional&image_size=landscape_4_3" alt="课程">
+          <div class="offline-info">
+            <div class="offline-title">经济学家如何操纵大国的经济政策-1</div>
+            <div class="offline-meta">
+              <span>2025-06-05 14:00-15:00</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
         </div>
-        <div class="mini-course-card">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20course%20thumbnail&image_size=landscape_4_3" alt="课程5">
-          <div class="course-name">当AI开始"说"起了...Open...</div>
+        <div class="offline-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=Japanese%20language%20learning%20cultural%20traditional&image_size=landscape_4_3" alt="课程">
+          <div class="offline-info">
+            <div class="offline-title">日语从零开始-61</div>
+            <div class="offline-meta">
+              <span>2025-06-05 15:30-16:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+        <div class="offline-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=cinematography%20lighting%20film%20making%20creative&image_size=landscape_4_3" alt="课程">
+          <div class="offline-info">
+            <div class="offline-title">光影江湖说（三）AI复刻行业观察--从"概率抽样"到"精品...</div>
+            <div class="offline-meta">
+              <span>2025-06-10 15:30-16:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="bottom-right">
-      <div class="panel-title">学习中</div>
-      <div class="placeholder" style="height: 80px;"></div>
+    <div class="video-section">
+      <div class="section-header">
+        <div class="section-title">视频课程</div>
+      </div>
+      <div class="video-grid">
+        <div class="video-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=architecture%20history%20educational%20documentary%20style&image_size=landscape_4_3" alt="课程">
+          <div class="video-title">世界建筑设计发展简史-13</div>
+          <div class="video-footer">
+            <span>130</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=Photoshop%20tutorial%20graphic%20design%20creative&image_size=landscape_4_3" alt="课程">
+          <div class="video-title">PS入门小技巧-66</div>
+          <div class="video-footer">
+            <span>38</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=city%20tourism%20China%20travel%20photography%20top12&image_size=landscape_4_3" alt="课程">
+          <div class="video-title">中国内地Top12城市的专属遗憾-</div>
+          <div class="video-footer">
+            <span>26</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=Japanese%20language%20course%20learning%20educational&image_size=landscape_4_3" alt="课程">
+          <div class="video-title">日语从零开始-60</div>
+          <div class="video-footer">
+            <span>60</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=architecture%20history%20educational%20style&image_size=landscape_4_3" alt="课程">
+          <div class="video-title">世界建筑设计发展简史-12</div>
+          <div class="video-footer">
+            <span>56</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
