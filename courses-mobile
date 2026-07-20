@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>人周一课 - 课程</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #3a3a3a;
+      --nav-text: #ffffff;
+      --nav-active: #f97316;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #FE6360;
+      --btn-hover: #ea580c;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .search-section {
+      background-color: var(--card-bg);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-content {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box {
+      flex: 1;
+      height: 36px;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-btn {
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .search-btn:active {
+      background-color: var(--btn-hover);
+    }
+
+    .category-tabs {
+      background-color: var(--card-bg);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-scroll {
+      display: inline-flex;
+      gap: 15px;
+      padding: 0 12px;
+    }
+
+    .category-tab {
+      padding: 6px 16px;
+      background-color: #f5f5f5;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .category-tab.active {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .main-content {
+      padding: 12px;
+    }
+
+    .section {
+      margin-bottom: 15px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 16px;
+      background-color: var(--btn-color);
+      border-radius: 2px;
+    }
+
+    .section-more {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .banner-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .banner-section-main {
+      width: 65%;
+    }
+
+    .banner-section-side {
+      width: 35%;
+    }
+
+    .recommend-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      padding: 10px;
+      height: 100%;
+    }
+
+    .side-banner {
+      background: #2d2d2d;
+      border-radius: 8px;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .side-banner-content {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .side-banner-images {
+      display: flex;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .side-banner-item {
+      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .side-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 10px;
+      background: #fe6360;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .side-banner-nav {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 6px;
+      pointer-events: none;
+    }
+
+    .side-nav-btn {
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      color: #333;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .side-banner-image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 25px 10px 35px;
+    }
+
+    .side-logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4fc3f7;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+    }
+
+    .side-title {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
+
+    .side-banner-footer {
+      padding: 8px 10px;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .side-course-name {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .side-banner-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .side-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .side-dot.active {
+      background: #fe6360;
+      transform: scale(1.2);
+    }
+
+    .banner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .banner-title {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .banner-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      width: 24px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-pagination {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pagination-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .pagination-dot.active {
+      background: white;
+    }
+
+    .banner-courses-wrapper {
+      overflow: hidden;
+    }
+
+    .banner-courses {
+      display: flex;
+      transition: transform 0.3s ease;
+    }
+
+    .banner-page {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+
+    .banner-course-item {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .banner-course-item .course-tag {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 4px;
+    }
+
+    .banner-course-item .course-title {
+      font-size: 13px;
+      color: white;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .banner-course-item .course-desc {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.7);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .course-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .course-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .course-info {
+      padding: 10px;
+    }
+
+    .course-title {
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .course-meta {
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .play-count::before {
+      content: '▶';
+      margin-right: 2px;
+    }
+
+    .video-duration {
+      font-family: monospace;
+    }
+
+    .study-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 8px;
+    }
+
+    .panel-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 16px;
+      background-color: var(--btn-color);
+      border-radius: 2px;
+    }
+
+    .panel-more {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .horizontal-scroll {
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 8px;
+    }
+
+    .horizontal-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scroll-content {
+      display: inline-flex;
+      gap: 10px;
+    }
+
+    .mini-course-card {
+      width: 110px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .mini-course-card img {
+      width: 100%;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .mini-course-title {
+      font-size: 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 6px;
+    }
+
+    .course-tabs-section {
+      margin-bottom: 15px;
+    }
+
+    .course-tabs-header {
+      display: flex;
+      background: white;
+      border-radius: 8px;
+      padding: 0;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .course-tab-item {
+      flex: 1;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .course-tab-item.active {
+      color: var(--btn-color);
+      font-weight: 600;
+    }
+
+    .course-tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: var(--btn-color);
+      border-radius: 2px;
+    }
+
+    .course-tab-content {
+      display: none;
+    }
+
+    .course-tab-content.active {
+      display: block;
+    }
+
+    .series-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .series-card {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .series-card img {
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .series-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .offline-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .offline-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .offline-card {
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px;
+      background-color: #fafafa;
+      border-radius: 6px;
+    }
+
+    .offline-card img {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .offline-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .offline-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .offline-meta {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .offline-meta span {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .offline-btn {
+      align-self: flex-start;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .offline-btn:active {
+      background-color: var(--btn-hover);
+    }
+
+    .offline-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      font-size: 10px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .series-tag {
+      display: inline-block;
+      padding: 1px 4px;
+      margin-right: 4px;
+      font-size: 9px;
+      color: white;
+      background-color: var(--btn-color);
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+
+    .video-section,
+    .offline-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      margin-bottom: 15px;
+      padding: 12px;
+    }
+
+    .sort-options {
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .sort-option {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .sort-option.active {
+      color: var(--btn-color);
+    }
+
+    .sort-arrow {
+      font-size: 10px;
+    }
+
+    .course-tab-content {
+      padding: 12px;
+    }
+
+    .video-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .filter-tab {
+      padding: 5px 12px;
+      background-color: #f5f5f5;
+      border-radius: 15px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .filter-tab.active {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .video-card {
+      cursor: pointer;
+    }
+
+    .video-image-wrapper {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 28px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+    }
+
+    .play-count {
+      font-size: 10px;
+      color: white;
+    }
+
+    .video-duration {
+      font-size: 10px;
+      color: white;
+      font-family: monospace;
+    }
+
+    .video-title {
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .video-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .rating {
+      color: #f59e0b;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      border: none;
+      background: none;
+      line-height: 1;
+    }
+
+    .modal-message {
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .modal-link {
+      display: block;
+      color: #0066cc;
+      text-decoration: none;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .modal-confirm-btn {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .modal-confirm-btn:active {
+      background-color: #ff7875;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 4px 12px;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--btn-color);
+    }
+
+    .bottom-nav-item img {
+      width: 22px;
+      height: 22px;
+    }
+
+    .content-bottom-spacing {
+      padding-bottom: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-section">
+    <div class="search-content">
+      <div class="nav-logo">
+        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent%20clean%20simple&image_size=square" alt="Logo">
+        <span>人周一课</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="搜索课程名称/分类/标签">
+      </div>
+      <button class="search-btn">搜索</button>
+    </div>
+  </div>
+
+  <div class="category-tabs">
+    <div class="category-scroll">
+      <span class="category-tab active">全部课程</span>
+      <span class="category-tab">研发运营</span>
+      <span class="category-tab">其他专业</span>
+      <span class="category-tab">行业概览</span>
+      <span class="category-tab">综合技能</span>
+      <span class="category-tab">科学技术</span>
+      <span class="category-tab">人文社科</span>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="banner-row">
+      <div class="banner-section-main">
+        <div class="recommend-banner">
+          <div class="banner-header">
+            <div class="banner-title">推荐好课</div>
+            <div class="banner-nav">
+              <button class="nav-btn" id="banner-prev" onclick="bannerPrev()">‹</button>
+              <div class="banner-pagination" id="banner-pagination">
+                <span class="pagination-dot active" onclick="goToBannerPage(0)"></span>
+                <span class="pagination-dot" onclick="goToBannerPage(1)"></span>
+                <span class="pagination-dot" onclick="goToBannerPage(2)"></span>
+              </div>
+              <button class="nav-btn" id="banner-next" onclick="bannerNext()">›</button>
+            </div>
+          </div>
+          <div class="banner-courses-wrapper">
+            <div class="banner-courses" id="banner-courses">
+              <div class="banner-page">
+                <div class="banner-course-item">
+                  <div class="course-tag">场景原画</div>
+                  <div class="course-title">深度解析</div>
+                  <div class="course-desc">从构图到光影的实战技巧</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">TA技术分享</div>
+                  <div class="course-title">技术美术分享</div>
+                  <div class="course-desc">Shader与渲染管线深度剖析</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">中国历史</div>
+                  <div class="course-title">系列课程</div>
+                  <div class="course-desc">从先秦到明清的历史全景</div>
+                </div>
+              </div>
+              <div class="banner-page">
+                <div class="banner-course-item">
+                  <div class="course-tag">游戏策划</div>
+                  <div class="course-title">数值设计精讲</div>
+                  <div class="course-desc">从基础到进阶的数值体系搭建</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">程序开发</div>
+                  <div class="course-title">性能优化实战</div>
+                  <div class="course-desc">Unity性能优化全攻略</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">音乐制作</div>
+                  <div class="course-title">游戏音效设计</div>
+                  <div class="course-desc">打造沉浸式听觉体验</div>
+                </div>
+              </div>
+              <div class="banner-page">
+                <div class="banner-course-item">
+                  <div class="course-tag">3D建模</div>
+                  <div class="course-title">次世代角色制作</div>
+                  <div class="course-desc">PBR材质与贴图全流程</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">运营推广</div>
+                  <div class="course-title">买量策略分析</div>
+                  <div class="course-desc">投放优化与效果追踪</div>
+                </div>
+                <div class="banner-course-item">
+                  <div class="course-tag">产品设计</div>
+                  <div class="course-title">用户体验设计</div>
+                  <div class="course-desc">从用户研究到原型设计</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-section-side">
+        <div class="side-banner">
+          <div class="side-banner-content">
+            <div class="side-banner-images" id="side-banner-images">
+              <div class="side-banner-item">
+                <div class="side-badge">猜你喜欢</div>
+                <div class="side-banner-nav">
+                  <button class="side-nav-btn" id="side-prev" onclick="sidePrev()">‹</button>
+                  <button class="side-nav-btn" id="side-next" onclick="sideNext()">›</button>
+                </div>
+                <div class="side-banner-image">
+                  <div class="side-logo">Vue</div>
+                  <div class="side-title">Vue3入门到精通</div>
+                </div>
+              </div>
+              <div class="side-banner-item">
+                <div class="side-badge">猜你喜欢</div>
+                <div class="side-banner-nav">
+                  <button class="side-nav-btn" onclick="sidePrev()">‹</button>
+                  <button class="side-nav-btn" onclick="sideNext()">›</button>
+                </div>
+                <div class="side-banner-image">
+                  <div class="side-logo">JS</div>
+                  <div class="side-title">算法入门精讲</div>
+                </div>
+              </div>
+              <div class="side-banner-item">
+                <div class="side-badge">猜你喜欢</div>
+                <div class="side-banner-nav">
+                  <button class="side-nav-btn" onclick="sidePrev()">‹</button>
+                  <button class="side-nav-btn" onclick="sideNext()">›</button>
+                </div>
+                <div class="side-banner-image">
+                  <div class="side-logo">React</div>
+                  <div class="side-title">React高级开发</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="side-banner-footer">
+            <div class="side-course-name">游戏运营推广入门</div>
+            <div class="side-banner-dots">
+              <span class="side-dot active" onclick="goToSidePage(0)"></span>
+              <span class="side-dot" onclick="goToSidePage(1)"></span>
+              <span class="side-dot" onclick="goToSidePage(2)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-tabs-section">
+      <div class="course-tabs-header">
+        <div class="course-tab-item active" data-tab="offline">线下/直播课程</div>
+        <div class="course-tab-item" data-tab="video">视频课程</div>
+        <div class="course-tab-item" data-tab="series">系列课程</div>
+      </div>
+
+      <div class="course-tab-content active" id="tab-offline">
+        <div class="offline-section">
+          <div class="video-filter">
+            <button class="filter-tab active">全部</button>
+            <button class="filter-tab">已报名</button>
+            <button class="filter-tab">公司级</button>
+            <button class="filter-tab">部门级</button>
+          </div>
+          <div class="video-grid">
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nodejs%20programming%20coding%20JavaScript%20web%20development%20minimal&image_size=landscape_16_9" alt="Nodejs">
+                <div class="video-overlay">
+                  <span class="play-count">2025-06-03</span>
+                  <span class="video-duration">15:30</span>
+                </div>
+              </div>
+              <div class="video-title"><span class="series-tag">系列</span>Nodejs实战-4</div>
+              <div class="video-footer">
+                <span>公司级</span>
+                <button class="offline-btn">报名</button>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20architecture%20building%20city%20skyline%20simple&image_size=landscape_16_9" alt="建筑">
+                <div class="video-overlay">
+                  <span class="play-count">2025-06-04</span>
+                  <span class="video-duration">17:00</span>
+                </div>
+              </div>
+              <div class="video-title"><span class="series-tag">系列</span>世界建筑设计发展简史</div>
+              <div class="video-footer">
+                <span>部门级</span>
+                <button class="offline-btn">报名</button>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20machine%20learning%20artificial%20intelligence%20tech%20minimal&image_size=landscape_16_9" alt="AI">
+                <div class="video-overlay">
+                  <span class="play-count">2025-06-10</span>
+                  <span class="video-duration">15:30</span>
+                </div>
+              </div>
+              <div class="video-title">光影江湖说（三）AI复刻行业观察</div>
+              <div class="video-footer">
+                <span>公司级</span>
+                <button class="offline-btn">报名</button>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Python%20data%20analysis%20programming%20coding%20minimal&image_size=landscape_16_9" alt="Python">
+                <div class="video-overlay">
+                  <span class="play-count">2025-06-11</span>
+                  <span class="video-duration">09:00</span>
+                </div>
+              </div>
+              <div class="video-title">Python数据分析实战</div>
+              <div class="video-footer">
+                <span>部门级</span>
+                <button class="offline-btn">报名</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-tab-content" id="tab-video">
+        <div class="video-section">
+          <div class="section-header">
+            <div class="sort-options">
+              <span class="sort-option" id="sort-play">播放量<span class="sort-arrow">↑</span></span>
+              <span class="sort-option active" id="sort-time">发布时间<span class="sort-arrow">↓</span></span>
+            </div>
+          </div>
+          <div class="video-filter">
+            <button class="filter-tab active" data-year="all">全部</button>
+            <button class="filter-tab" data-year="2026">2026</button>
+            <button class="filter-tab" data-year="2025">2025</button>
+            <button class="filter-tab" data-year="2024">2024</button>
+            <button class="filter-tab" data-year="2023">2023</button>
+            <button class="filter-tab" data-year="2022">2022</button>
+          </div>
+          <div class="video-grid">
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=economics%20finance%20business%20chart%20graph%20minimal&image_size=landscape_16_9" alt="经济学家">
+                <div class="video-overlay">
+                  <span class="play-count">205</span>
+                  <span class="video-duration">01:01:00</span>
+                </div>
+              </div>
+              <div class="video-title">经济学家如何操纵大国的经济政策-1</div>
+              <div class="video-footer">
+                <span>课程简介</span>
+                <span class="rating">5.0</span>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20language%20learning%20study%20textbook%20minimal&image_size=landscape_16_9" alt="日语">
+                <div class="video-overlay">
+                  <span class="play-count">13</span>
+                  <span class="video-duration">00:30:03</span>
+                </div>
+              </div>
+              <div class="video-title">日语从零开始-61</div>
+              <div class="video-footer">
+                <span>课程简介</span>
+                <span class="rating">5.0</span>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=architecture%20design%20history%20building%20minimal&image_size=landscape_16_9" alt="建筑">
+                <div class="video-overlay">
+                  <span class="play-count">102</span>
+                  <span class="video-duration">00:48:32</span>
+                </div>
+              </div>
+              <div class="video-title"><span class="series-tag">系列</span>世界建筑设计发展简史-1</div>
+              <div class="video-footer">
+                <span>课程简介</span>
+                <span class="rating">4.5</span>
+              </div>
+            </div>
+            <div class="video-card">
+              <div class="video-image-wrapper">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nodejs%20programming%20coding%20JavaScript%20web%20development%20minimal&image_size=landscape_16_9" alt="Nodejs">
+                <div class="video-overlay">
+                  <span class="play-count">78</span>
+                  <span class="video-duration">00:14:13</span>
+                </div>
+              </div>
+              <div class="video-title">Nodejs实战-4</div>
+              <div class="video-footer">
+                <span>课程简介</span>
+                <span class="rating">5.0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-tab-content" id="tab-series">
+        <div class="series-section">
+          <div class="series-grid">
+            <div class="series-card">
+              <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=architecture%20design%20history%20building%20minimal&image_size=landscape_16_9" alt="建筑">
+              <div class="series-title">世界建筑设计发展简史</div>
+            </div>
+            <div class="series-card">
+              <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=city%20urban%20travel%20landscape%20minimal&image_size=landscape_16_9" alt="中国历史">
+              <div class="series-title">中国历史</div>
+            </div>
+            <div class="series-card">
+              <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=photoshop%20graphic%20design%20software%20minimal&image_size=landscape_16_9" alt="设计">
+              <div class="series-title">东西方审美原则差异</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-bottom-spacing"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="bottom-nav-item">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=home%20icon%20simple%20white%20outline&image_size=square" alt="首页">
+      <span>首页</span>
+    </div>
+    <div class="bottom-nav-item active">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=book%20learning%20icon%20simple%20white%20outline&image_size=square" alt="课程">
+      <span>课程</span>
+    </div>
+    <div class="bottom-nav-item">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=user%20profile%20icon%20simple%20white%20outline&image_size=square" alt="我的">
+      <span>我的</span>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-message" id="modalMessage"></div>
+      <a href="#" class="modal-link">查看已报名课程</a>
+      <button class="modal-confirm-btn" onclick="closeModal()">确定</button>
+    </div>
+  </div>
+
+  <script>
+    let currentBannerPage = 0;
+    const totalBannerPages = 3;
+
+    function updateBanner() {
+      const courses = document.getElementById('banner-courses');
+      const dots = document.querySelectorAll('.pagination-dot');
+      const prevBtn = document.getElementById('banner-prev');
+      const nextBtn = document.getElementById('banner-next');
+      
+      courses.style.transform = `translateX(-${currentBannerPage * 100}%)`;
+      
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentBannerPage);
+      });
+      
+      prevBtn.disabled = currentBannerPage === 0;
+      nextBtn.disabled = currentBannerPage === totalBannerPages - 1;
+    }
+
+    function bannerPrev() {
+      if (currentBannerPage > 0) {
+        currentBannerPage--;
+        updateBanner();
+      }
+    }
+
+    function bannerNext() {
+      if (currentBannerPage < totalBannerPages - 1) {
+        currentBannerPage++;
+        updateBanner();
+      }
+    }
+
+    function goToBannerPage(page) {
+      currentBannerPage = page;
+      updateBanner();
+    }
+
+    setInterval(() => {
+      currentBannerPage = (currentBannerPage + 1) % totalBannerPages;
+      updateBanner();
+    }, 4000);
+
+    let currentSidePage = 0;
+    const totalSidePages = 3;
+
+    function updateSideBanner() {
+      const sideImages = document.getElementById('side-banner-images');
+      const sideDots = document.querySelectorAll('.side-dot');
+      
+      sideImages.style.transform = `translateX(-${currentSidePage * 100}%)`;
+      
+      sideDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSidePage);
+      });
+    }
+
+    function sidePrev() {
+      if (currentSidePage > 0) {
+        currentSidePage--;
+        updateSideBanner();
+      }
+    }
+
+    function sideNext() {
+      if (currentSidePage < totalSidePages - 1) {
+        currentSidePage++;
+        updateSideBanner();
+      }
+    }
+
+    function goToSidePage(page) {
+      currentSidePage = page;
+      updateSideBanner();
+    }
+
+    setInterval(() => {
+      currentSidePage = (currentSidePage + 1) % totalSidePages;
+      updateSideBanner();
+    }, 4000);
+
+    // 课程tab切换
+    document.querySelectorAll('.course-tab-item').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        
+        // 更新tab激活状态
+        document.querySelectorAll('.course-tab-item').forEach(t => {
+          t.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // 更新内容显示
+        document.querySelectorAll('.course-tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById('tab-' + tabId).classList.add('active');
+      });
+    });
+
+    // 视频课程卡片跳转（仅tab-video内的卡片）
+    document.querySelectorAll('#tab-video .video-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function() {
+        window.location.href = 'series-courses-mobile.html';
+      });
+    });
+
+    // 系列课程卡片跳转
+    document.querySelectorAll('.series-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function() {
+        window.location.href = 'series-courses-mobile.html';
+      });
+    });
+
+    function openModal(courseName) {
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalMessage = document.getElementById('modalMessage');
+      modalMessage.textContent = `您已成功报名《${courseName}》,请您按时出席此培训哦~~`;
+      modalOverlay.classList.add('active');
+    }
+
+    function closeModal() {
+      const modalOverlay = document.getElementById('modalOverlay');
+      modalOverlay.classList.remove('active');
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const offlineBtns = document.querySelectorAll('.offline-btn');
+      offlineBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.video-card');
+          const courseTitle = card.querySelector('.video-title').textContent;
+          openModal(courseTitle);
+        });
+      });
+
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          filterTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      const categoryTabs = document.querySelectorAll('.category-tab');
+      categoryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          categoryTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      const sortOptions = document.querySelectorAll('.sort-option');
+      sortOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          sortOptions.forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+          const arrow = this.querySelector('.sort-arrow');
+          if (arrow) {
+            arrow.textContent = arrow.textContent === '↑' ? '↓' : '↑';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
