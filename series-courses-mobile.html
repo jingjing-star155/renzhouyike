@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>日语从零开始 - 基础认知</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #ffffff;
+      --nav-text: #333333;
+      --nav-active: #FE6360;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #FE6360;
+      --btn-hover: #ea580c;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--nav-bg);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    .nav-content {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .nav-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+      text-align: center;
+      margin-right: 44px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      color: var(--nav-active);
+    }
+
+    .main-content {
+      margin-top: 44px;
+    }
+
+    .course-header {
+      background-color: var(--card-bg);
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .course-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .course-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .meta-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .meta-item .icon {
+      font-size: 12px;
+      color: var(--btn-color);
+    }
+
+    .course-intro-link {
+      color: var(--btn-color);
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .video-section {
+      background-color: #000;
+      position: relative;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .play-btn::before {
+      content: '▶';
+      color: white;
+      font-size: 20px;
+      margin-left: 3px;
+    }
+
+    .rating-section {
+      background-color: var(--card-bg);
+      padding: 12px;
+      margin-top: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rating-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rating-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .course-rating-stars {
+      font-size: 14px;
+      color: #FFB800;
+      margin-right: 4px;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .rating-star {
+      position: relative;
+      display: inline-block;
+      width: 18px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #ddd;
+      transition: transform 0.2s;
+    }
+
+    .rating-star::before {
+      content: '★';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      overflow: hidden;
+      color: #FE6360;
+    }
+
+    .rating-star.active::before {
+      width: 100%;
+    }
+
+    .rating-star.half::before {
+      width: 50%;
+    }
+
+    .rating-star:hover,
+    .rating-star.active,
+    .rating-star.half {
+      transform: scale(1.1);
+    }
+
+    .rating-value {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-left: 8px;
+    }
+
+    .rating-btn {
+      font-size: 13px;
+      color: var(--btn-color);
+      text-decoration: none;
+    }
+
+    .episode-section {
+      background-color: var(--card-bg);
+      margin-top: 10px;
+    }
+
+    .episode-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .episode-count {
+      font-weight: normal;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .chapter-item {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      cursor: pointer;
+      background-color: #fff;
+    }
+
+    .chapter-header:active {
+      background-color: #f9f9f9;
+    }
+
+    .chapter-toggle {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-right: 8px;
+      transition: transform 0.2s;
+    }
+
+    .chapter-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .chapter-content {
+      background-color: #fafafa;
+    }
+
+    .chapter-content .episode-item {
+      padding-left: 32px;
+    }
+
+    .episode-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background-color 0.2s;
+    }
+
+    .episode-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .episode-item.active {
+      background-color: #eff6ff;
+      color: var(--btn-color);
+    }
+
+    .episode-number {
+      font-weight: 500;
+      margin-right: 10px;
+      min-width: 32px;
+      font-size: 12px;
+    }
+
+    .episode-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+    }
+
+    .progress-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      background-color: #FE6360;
+      border: 1px solid #FE6360;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .episode-status-tag {
+      padding: 2px 8px;
+      font-size: 10px;
+      border-radius: 3px;
+    }
+
+    .episode-status-tag.completed {
+      color: #0369a1;
+      background-color: #f0f9ff;
+    }
+
+    .comments-section {
+      background-color: var(--card-bg);
+      margin-top: 10px;
+      padding: 12px;
+    }
+
+    .comments-header {
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .comments-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .comment-post-area {
+      margin-bottom: 15px;
+    }
+
+    .comment-input {
+      width: 100%;
+      height: 60px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      resize: none;
+      font-size: 14px;
+      color: var(--text-primary);
+      box-sizing: border-box;
+    }
+
+    .comment-input:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .post-btn-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .identity-options-inline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .identity-option-inline {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .identity-option-inline input[type="radio"] {
+      margin: 0;
+      transform: scale(0.9);
+    }
+
+    .post-comment-btn {
+      padding: 6px 16px;
+      background-color: var(--btn-color);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .post-comment-btn:active {
+      background-color: var(--btn-hover);
+    }
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .comment-item {
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .comment-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .comment-content {
+      flex: 1;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .comment-author {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .comment-date {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .comment-text {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .comment-actions,
+    .reply-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .like-btn,
+    .reply-btn,
+    .like-reply-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .like-btn:hover,
+    .reply-btn:hover,
+    .like-reply-btn:hover {
+      color: var(--btn-color);
+    }
+
+    .like-btn.liked {
+      color: var(--btn-color);
+    }
+
+    .like-icon {
+      font-size: 14px;
+    }
+
+    .like-count {
+      font-weight: 500;
+    }
+
+    .replies-container {
+      margin-top: 10px;
+      padding-left: 10px;
+      border-left: 2px solid var(--border-color);
+    }
+
+    .reply-item {
+      padding: 10px 0;
+    }
+
+    .reply-content {
+      flex: 1;
+    }
+
+    .reply-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .reply-author {
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .reply-date {
+      color: #999;
+      font-size: 11px;
+    }
+
+    .reply-text {
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .reply-input-area {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .reply-textarea {
+      width: 100%;
+      min-height: 50px;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 13px;
+      resize: none;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+    }
+
+    .reply-textarea:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .reply-actions-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .cancel-reply-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .submit-reply-btn {
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 4px 12px;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--btn-color);
+    }
+
+    .bottom-nav-item img {
+      width: 22px;
+      height: 22px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="back-btn" onclick="goBack()">‹</div>
+      </div>
+      <div class="nav-title">日语从零开始</div>
+      <div class="nav-right">
+        <div class="action-btn" id="favorite-btn">☆</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="course-header">
+      <h1 class="course-title">日语从零开始</h1>
+      <div class="course-meta">
+        <div class="meta-left">
+          <div class="meta-item">
+            <span class="icon">●</span>
+            <span>2026-06-12发布</span>
+          </div>
+          <div class="meta-item">
+            <span>2次播放</span>
+          </div>
+          <div class="meta-item">
+            <span>课程评分：</span>
+            <span class="course-rating-stars">★★★★☆</span>
+            <span>4.0</span>
+          </div>
+        </div>
+        <a href="#" class="course-intro-link">课程简介 ›</a>
+      </div>
+    </div>
+
+    <div class="video-section">
+      <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Japanese%20language%20learning%20course%20video%20cover%20with%20torii%20gate%20and%20blue%20sky&image_size=landscape_16_9" alt="课程视频" class="video-placeholder">
+      <div class="play-btn" onclick="playVideo()"></div>
+    </div>
+
+    <div class="rating-section">
+      <div class="rating-bar">
+        <div class="rating-left">
+          <span class="rating-label">我的评分：</span>
+          <div class="rating-stars" id="ratingStars">
+            <span class="rating-star" data-rating="1">★</span>
+            <span class="rating-star" data-rating="2">★</span>
+            <span class="rating-star" data-rating="3">★</span>
+            <span class="rating-star" data-rating="4">★</span>
+            <span class="rating-star" data-rating="5">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="episode-section">
+      <div class="episode-list-header">
+        <span>课程目录</span>
+        <span class="episode-count">共20集</span>
+      </div>
+
+      <div class="chapter-item expanded">
+        <div class="chapter-header" data-chapter="1">
+          <span class="chapter-toggle">▼</span>
+          <span class="chapter-title">第一节：基础认知</span>
+        </div>
+        <div class="chapter-content">
+          <div class="episode-item active">
+            <span class="episode-number">P1</span>
+            <span class="episode-title">日语词汇入门-单词及拓展</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P2</span>
+            <span class="episode-title">日语课文学习-全文梳理讲解</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P3</span>
+            <span class="episode-title">日语发音规则详解</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P4</span>
+            <span class="episode-title">日语基础语法入门</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P5</span>
+            <span class="episode-title">日语日常会话练习</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header" data-chapter="2">
+          <span class="chapter-toggle">▶</span>
+          <span class="chapter-title">第二节：进阶学习</span>
+        </div>
+        <div class="chapter-content" style="display: none;">
+          <div class="episode-item">
+            <span class="episode-number">P6</span>
+            <span class="episode-title">日语动词变形详解</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P7</span>
+            <span class="episode-title">日语形容词学习</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P8</span>
+            <span class="episode-title">日语副词与助词</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P9</span>
+            <span class="episode-title">日语敬语用法</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P10</span>
+            <span class="episode-title">日语长难句分析</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header" data-chapter="3">
+          <span class="chapter-toggle">▶</span>
+          <span class="chapter-title">第三节：实战应用</span>
+        </div>
+        <div class="chapter-content" style="display: none;">
+          <div class="episode-item">
+            <span class="episode-number">P11</span>
+            <span class="episode-title">日语听力训练</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P12</span>
+            <span class="episode-title">日语口语表达</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P13</span>
+            <span class="episode-title">日语阅读技巧</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P14</span>
+            <span class="episode-title">日语写作练习</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P15</span>
+            <span class="episode-title">日语N5模拟考试</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header" data-chapter="4">
+          <span class="chapter-toggle">▶</span>
+          <span class="chapter-title">第四节：文化拓展</span>
+        </div>
+        <div class="chapter-content" style="display: none;">
+          <div class="episode-item">
+            <span class="episode-number">P16</span>
+            <span class="episode-title">日本文化与礼仪</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P17</span>
+            <span class="episode-title">日本节日习俗</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P18</span>
+            <span class="episode-title">日本饮食文化</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P19</span>
+            <span class="episode-title">日本旅游日语</span>
+            <span class="episode-status-tag completed">已学完</span>
+          </div>
+          <div class="episode-item">
+            <span class="episode-number">P20</span>
+            <span class="episode-title">课程总结与展望</span>
+            <button class="progress-btn">进度条拖拽</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <div class="comments-header">
+        <div class="comments-title">评论区</div>
+      </div>
+
+      <div class="comment-post-area">
+        <textarea class="comment-input" id="newCommentInput" placeholder="写下你的评论..."></textarea>
+        <div class="post-btn-wrapper">
+          <label class="identity-option-inline">
+            <input type="checkbox" id="anonymousCheck" name="comment-identity" value="anonymous">
+            <span>匿名</span>
+          </label>
+          <button class="post-comment-btn" id="postCommentBtn" onclick="postComment()">发布</button>
+        </div>
+      </div>
+
+      <div class="comments-list" id="commentsList">
+        <div class="comment-item">
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">匿名用户</span>
+              <span class="comment-date">2026-05-20</span>
+            </div>
+            <div class="comment-text">非常实用的课程，讲解清晰，案例丰富，学习后收获很大！</div>
+            <div class="comment-actions">
+              <button class="like-btn" onclick="toggleLike(this)">
+                <span class="like-icon">♥</span>
+                <span class="like-count">128</span>
+              </button>
+              <button class="reply-btn" onclick="openReply(this)">
+                <span>回复</span>
+              </button>
+            </div>
+            <div class="replies-container">
+              <div class="reply-item">
+                <div class="reply-content">
+                  <div class="reply-header">
+                    <span class="reply-author">匿名用户</span>
+                    <span class="reply-date">2026-05-21</span>
+                  </div>
+                  <div class="reply-text">同意！我也觉得很好</div>
+                  <div class="reply-actions">
+                    <button class="like-reply-btn" onclick="toggleLike(this)">
+                      <span class="like-icon">♥</span>
+                      <span class="like-count">35</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment-item">
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">匿名用户</span>
+              <span class="comment-date">2026-05-15</span>
+            </div>
+            <div class="comment-text">课程内容很专业，希望后续能有更多实操案例分享。</div>
+            <div class="comment-actions">
+              <button class="like-btn" onclick="toggleLike(this)">
+                <span class="like-icon">♥</span>
+                <span class="like-count">89</span>
+              </button>
+              <button class="reply-btn" onclick="openReply(this)">
+                <span>回复</span>
+              </button>
+            </div>
+            <div class="replies-container">
+              <div class="reply-item">
+                <div class="reply-content">
+                  <div class="reply-header">
+                    <span class="reply-author">匿名用户</span>
+                    <span class="reply-date">2026-05-16</span>
+                  </div>
+                  <div class="reply-text">同意，希望能有更多实战案例！</div>
+                  <div class="reply-actions">
+                    <button class="like-reply-btn" onclick="toggleLike(this)">
+                      <span class="like-icon">♥</span>
+                      <span class="like-count">23</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment-item">
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">匿名用户</span>
+              <span class="comment-date">2026-05-10</span>
+            </div>
+            <div class="comment-text">老师讲解很透彻，知识点覆盖全面，非常推荐！</div>
+            <div class="comment-actions">
+              <button class="like-btn" onclick="toggleLike(this)">
+                <span class="like-icon">♥</span>
+                <span class="like-count">156</span>
+              </button>
+              <button class="reply-btn" onclick="openReply(this)">
+                <span>回复</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="bottom-nav-item">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=home%20icon%20simple%20outline&image_size=square" alt="首页">
+      <span>首页</span>
+    </div>
+    <div class="bottom-nav-item active">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=book%20learning%20icon%20simple%20outline&image_size=square" alt="课程">
+      <span>课程</span>
+    </div>
+    <div class="bottom-nav-item">
+      <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=user%20profile%20icon%20simple%20outline&image_size=square" alt="我的">
+      <span>我的</span>
+    </div>
+  </div>
+
+  <script>
+    let currentRating = 0;
+    const ratingStars = document.getElementById('ratingStars');
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function playVideo() {
+      alert('视频播放功能开发中...');
+    }
+
+    function updateRatingStars(rating) {
+      const stars = ratingStars.querySelectorAll('.rating-star');
+      stars.forEach((s, index) => {
+        const starValue = index + 1;
+        s.classList.remove('active', 'half');
+        if (rating >= starValue) {
+          s.classList.add('active');
+        } else if (rating === starValue - 0.5) {
+          s.classList.add('half');
+        }
+      });
+    }
+
+    ratingStars.addEventListener('click', function(e) {
+      const star = e.target;
+      if (star.classList.contains('rating-star')) {
+        const rect = star.getBoundingClientRect();
+        const isHalf = e.clientX - rect.left <= rect.width / 2;
+        currentRating = parseInt(star.dataset.rating) - (isHalf ? 0.5 : 0);
+        updateRatingStars(currentRating);
+      }
+    });
+
+    const favoriteBtn = document.getElementById('favorite-btn');
+    let isFavorite = false;
+    favoriteBtn.addEventListener('click', function() {
+      isFavorite = !isFavorite;
+      this.textContent = isFavorite ? '★' : '☆';
+      this.style.color = isFavorite ? '#FE6360' : '';
+      alert(isFavorite ? '已收藏课程' : '已取消收藏');
+    });
+
+    document.querySelectorAll('.chapter-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const chapterContent = this.nextElementSibling;
+        const toggle = this.querySelector('.chapter-toggle');
+        const isExpanded = chapterContent.style.display !== 'none';
+        
+        if (isExpanded) {
+          chapterContent.style.display = 'none';
+          toggle.textContent = '▶';
+        } else {
+          chapterContent.style.display = 'block';
+          toggle.textContent = '▼';
+        }
+      });
+    });
+
+    function toggleLike(btn) {
+      const likeIcon = btn.querySelector('.like-icon');
+      const likeCount = btn.querySelector('.like-count');
+      
+      if (btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        likeIcon.style.color = '#999';
+        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+      } else {
+        btn.classList.add('liked');
+        likeIcon.style.color = '#FE6360';
+        likeCount.textContent = parseInt(likeCount.textContent) + 1;
+      }
+    }
+
+    function openReply(btn) {
+      const commentItem = btn.closest('.comment-item');
+      let replyArea = commentItem.querySelector('.reply-input-area');
+      
+      if (!replyArea) {
+        replyArea = document.createElement('div');
+        replyArea.className = 'reply-input-area';
+        replyArea.innerHTML = `
+          <textarea class="reply-textarea" placeholder="写下你的回复..."></textarea>
+          <div class="reply-actions-buttons">
+            <button class="cancel-reply-btn" onclick="closeReply(this)">取消</button>
+            <label class="identity-option-inline">
+              <input type="checkbox" class="reply-anonymous-check" name="reply-identity" value="anonymous">
+              <span>匿名</span>
+            </label>
+            <button class="submit-reply-btn" onclick="submitReply(this)">发送</button>
+          </div>
+        `;
+        commentItem.appendChild(replyArea);
+      }
+    }
+
+    function closeReply(btn) {
+      const replyArea = btn.closest('.reply-input-area');
+      replyArea.remove();
+    }
+
+    function submitReply(btn) {
+      const replyArea = btn.closest('.reply-input-area');
+      const textarea = replyArea.querySelector('.reply-textarea');
+      const replyText = textarea.value.trim();
+      
+      if (!replyText) {
+        alert('请输入回复内容');
+        return;
+      }
+
+      const anonymousCheck = replyArea.querySelector('.reply-anonymous-check');
+      const authorName = anonymousCheck.checked ? '匿名用户' : '用户';
+
+      const commentItem = replyArea.closest('.comment-item');
+      const repliesContainer = commentItem.querySelector('.replies-container') || document.createElement('div');
+      if (!commentItem.querySelector('.replies-container')) {
+        repliesContainer.className = 'replies-container';
+        commentItem.insertBefore(repliesContainer, replyArea);
+      }
+
+      const replyItem = document.createElement('div');
+      replyItem.className = 'reply-item';
+      replyItem.innerHTML = `
+        <div class="reply-content">
+          <div class="reply-header">
+            <span class="reply-author">${authorName}</span>
+            <span class="reply-date">${new Date().toISOString().split('T')[0]}</span>
+          </div>
+          <div class="reply-text">${replyText}</div>
+          <div class="reply-actions">
+            <button class="like-reply-btn" onclick="toggleLike(this)">
+              <span class="like-icon">♥</span>
+              <span class="like-count">0</span>
+            </button>
+          </div>
+        </div>
+      `;
+      repliesContainer.appendChild(replyItem);
+      
+      replyArea.remove();
+      alert('回复成功');
+    }
+
+    function postComment() {
+      const input = document.getElementById('newCommentInput');
+      const commentText = input.value.trim();
+      
+      if (!commentText) {
+        alert('请输入评论内容');
+        return;
+      }
+
+      const anonymousCheck = document.getElementById('anonymousCheck');
+      const authorName = anonymousCheck.checked ? '匿名用户' : '用户';
+
+      const commentsList = document.getElementById('commentsList');
+      const commentItem = document.createElement('div');
+      commentItem.className = 'comment-item';
+      commentItem.innerHTML = `
+        <div class="comment-content">
+          <div class="comment-header">
+            <span class="comment-author">${authorName}</span>
+            <span class="comment-date">${new Date().toISOString().split('T')[0]}</span>
+          </div>
+          <div class="comment-text">${commentText}</div>
+          <div class="comment-actions">
+            <button class="like-btn" onclick="toggleLike(this)">
+              <span class="like-icon">♥</span>
+              <span class="like-count">0</span>
+            </button>
+            <button class="reply-btn" onclick="openReply(this)">
+              <span>回复</span>
+            </button>
+          </div>
+        </div>
+      `;
+      commentsList.insertBefore(commentItem, commentsList.firstChild);
+      
+      input.value = '';
+      alert('评论发布成功');
+    }
+  </script>
+  <script src="page-navigation.js"></script>
+</body>
+</html>
