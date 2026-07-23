@@ -1,0 +1,3358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课 - 课程V2</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #3a3a3a;
+      --nav-text: #ffffff;
+      --nav-active: #f97316;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #FE6360;
+      --btn-hover: #ea580c;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .nav-bar {
+      background-color: var(--nav-bg);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--nav-text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-logo img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 12px 0;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--nav-active);
+      border-bottom-color: var(--nav-active);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--nav-text);
+      font-size: 14px;
+    }
+
+    .nav-user img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #555;
+    }
+
+    .nav-user .logout {
+      color: #999;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .nav-user .logout:hover {
+      color: var(--nav-active);
+    }
+
+    .search-section {
+      background-color: var(--card-bg);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .search-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: 50%;
+    }
+
+    .search-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .learning-count {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background-color: #f8f9fa;
+      color: #333;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .learning-count:hover {
+      background-color: #f0f0f0;
+      border-color: #ccc;
+    }
+
+    .learning-count .icon {
+      font-size: 16px;
+    }
+
+    .learning-count .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background-color: var(--btn-color);
+      color: white;
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .learning-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    .learning-overlay.show {
+      display: block;
+    }
+
+    .learning-panel-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 95vh;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .learning-panel {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+    }
+
+    .learning-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .learning-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--btn-color);
+    }
+
+    .learning-tip {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .learning-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background-color: transparent;
+      color: #999;
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .learning-close:hover {
+      background-color: #e0e0e0;
+      color: #666;
+    }
+
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .learning-card {
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      transition: box-shadow 0.2s;
+    }
+
+    .learning-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .learning-image-wrapper {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+
+    .learning-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .learning-play {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      padding: 2px 6px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 10px;
+      border-radius: 3px;
+    }
+
+    .learning-duration {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      padding: 2px 6px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 10px;
+      border-radius: 3px;
+    }
+
+    .learning-title-text {
+      padding: 10px;
+      font-size: 12px;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .learning-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .learning-link {
+      font-size: 11px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .learning-link:hover {
+      color: var(--btn-color);
+    }
+
+    .learning-action {
+      padding: 3px 8px;
+      border: none;
+      background-color: transparent;
+      color: #999;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .learning-action:hover {
+      background-color: #f5f5f5;
+      color: #666;
+    }
+
+    .offline-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    .offline-overlay.show {
+      display: block;
+    }
+
+    .offline-panel-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 95vh;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .offline-panel {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+    }
+
+    .offline-header-float {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .offline-title-float {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--btn-color);
+    }
+
+    .offline-tip-float {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .offline-close-float {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background-color: transparent;
+      color: #999;
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .offline-close-float:hover {
+      background-color: #e0e0e0;
+      color: #666;
+    }
+
+    .offline-grid-float {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+      padding: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .offline-card-float {
+      background-color: #fafafa;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .offline-card-float:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .offline-image-wrapper-float {
+      position: relative;
+    }
+
+    .offline-image-wrapper-float img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .offline-badge-float {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: white;
+      border-radius: 4px 0 0 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .offline-info-float {
+      padding: 8px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .offline-title-float-text {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 7px;
+    }
+
+    .offline-meta-float {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 9px;
+      color: var(--text-secondary);
+      margin-bottom: 9px;
+    }
+
+    .offline-meta-float span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .offline-btn-float {
+      width: 30%;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+    }
+
+    .offline-btn-float:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .offline-filter-float {
+      padding: 10px 15px;
+      border-bottom: 1px solid var(--border-color);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .filter-tabs-float {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-tab-float {
+      padding: 6px 14px;
+      background-color: transparent;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tab-float:hover {
+      background-color: #f5f5f5;
+      color: var(--text-primary);
+    }
+
+    .filter-tab-float.active {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .video-overlay-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    .video-overlay-panel.show {
+      display: block;
+    }
+
+    .video-panel-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 95vh;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .video-panel {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+    }
+
+    .video-header-float {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .video-title-float {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--btn-color);
+    }
+
+    .video-tip-float {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .video-close-float {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background-color: transparent;
+      color: #999;
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .video-close-float:hover {
+      background-color: #e0e0e0;
+      color: #666;
+    }
+
+    .video-filter-float {
+      padding: 10px 15px;
+      border-bottom: 1px solid var(--border-color);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .video-filter-tabs-float {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .video-filter-tab-float {
+      padding: 6px 14px;
+      background-color: transparent;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .video-filter-tab-float:hover {
+      background-color: #f5f5f5;
+      color: var(--text-primary);
+    }
+
+    .video-filter-tab-float.active {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .video-sort-float {
+      display: flex;
+      gap: 15px;
+    }
+
+    .video-sort-option-float {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background-color: transparent;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .video-sort-option-float:hover {
+      background-color: #f5f5f5;
+      color: var(--text-primary);
+    }
+
+    .video-sort-option-float.active {
+      background-color: #f5f5f5;
+      color: var(--text-primary);
+    }
+
+    .sort-arrow-float {
+      font-size: 10px;
+    }
+
+    .video-grid-float {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+      padding: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .video-card-float {
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .video-image-wrapper-float {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .video-card-float img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay-float {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 10%;
+      min-height: 28px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .play-count-float {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .video-duration-float {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .video-title-float-text {
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-top: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .video-footer-float {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .video-rating-float {
+      color: #ff9800;
+    }
+
+    .series-overlay-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    .series-overlay-panel.show {
+      display: block;
+    }
+
+    .series-panel-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 95vh;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .series-panel {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+    }
+
+    .series-header-float {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .series-title-float {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--btn-color);
+    }
+
+    .series-tip-float {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .series-close-float {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background-color: transparent;
+      color: #999;
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .series-close-float:hover {
+      background-color: #e0e0e0;
+      color: #666;
+    }
+
+    .series-grid-float {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+      padding: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .series-card-link-float {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .series-card-float {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .series-card-float img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .series-title-float-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ai-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #666;
+      user-select: none;
+    }
+
+    .ai-checkbox input[type="checkbox"] {
+      display: none;
+    }
+
+    .ai-checkbox .checkmark {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .ai-checkbox input[type="checkbox"]:checked + .checkmark {
+      background-color: var(--btn-color);
+      border-color: var(--btn-color);
+    }
+
+    .ai-checkbox input[type="checkbox"]:checked + .checkmark::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 10px;
+    }
+
+    .search-box {
+      flex: 1;
+      height: 32px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-btn {
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .search-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .ai-search {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .ai-search img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .main-content {
+      max-width: 1610px;
+      width: 95%;
+      min-width: 1186px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      gap: 15px;
+      box-sizing: border-box;
+    }
+
+    .left-panel {
+      flex: 0 0 29%;
+      min-width: 440px;
+      background-color: var(--card-bg);
+      position: relative;
+      border-radius: 4px;
+      padding: 12px;
+      height: 200px;
+      box-sizing: border-box;
+    }
+
+    .category-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .category-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .category-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .sub-category {
+      color: #666666;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .sub-category:hover {
+      color: var(--btn-color);
+    }
+
+    .sub-category.has-submenu {
+      position: relative;
+    }
+
+    .submenu-panel {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-left: 0;
+      width: 455px;
+      background-color: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+      padding: 14px;
+      display: none;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 8px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+
+
+    .submenu-title {
+      width: 100%;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .submenu-title span:first-child {
+      color: var(--btn-color);
+    }
+
+    .submenu-title span:last-child {
+      color: #999;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .submenu-item {
+      color: #666;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .submenu-item:hover {
+      background-color: #f0f5ff;
+      color: var(--btn-color);
+    }
+
+    .center-panel {
+      flex: 0 0 40%;
+      min-width: 390px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .recommend-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      padding: 24px;
+      color: white;
+      position: relative;
+      height: 200px;
+    }
+
+    .banner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .banner-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .banner-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .banner-pagination {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pagination-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .pagination-dot.active {
+      background: white;
+    }
+
+    .banner-courses-wrapper {
+      overflow: hidden;
+    }
+
+    .banner-courses {
+      display: flex;
+      gap: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .banner-page {
+      display: flex;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .banner-page > div {
+      flex: 1;
+      min-width: calc((100% - 30px) / 3);
+    }
+
+    .banner-course-item {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .banner-course-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .banner-course-item .course-tag {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .banner-course-item .course-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .banner-course-item .course-desc {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .featured-courses {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .featured-card {
+      cursor: pointer;
+    }
+
+    .featured-card img {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .featured-card .course-title {
+      font-size: 12px;
+      color: var(--text-primary);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .series-banners {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .series-banner {
+      height: 90px;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .series-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .right-panel {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-sizing: border-box;
+      height: 200px;
+    }
+
+    .right-card {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 10px;
+    }
+
+    .carousel-card {
+      padding: 0;
+      height: 100%;
+    }
+
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #f8f9fa;
+      height: 100%;
+    }
+
+    .carousel-item {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    .carousel-item.active {
+      display: flex;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      flex: 1;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .carousel-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 15%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .carousel-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 4px 10px;
+      background-color: var(--btn-color);
+      color: white;
+      font-size: 11px;
+      border-radius: 4px;
+      z-index: 10;
+      font-weight: 500;
+    }
+
+    .carousel-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .carousel-prev:hover,
+    .carousel-next:hover {
+      background: white;
+      border-color: var(--btn-color);
+      color: var(--btn-color);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-prev {
+      left: 10px;
+    }
+
+    .carousel-next {
+      right: 10px;
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .indicator {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .indicator.active {
+      background: var(--btn-color);
+      border-color: var(--btn-color);
+      transform: scale(1.3);
+    }
+
+    .panel-title {
+      font-size: 12px;
+      font-weight: normal;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .right-course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+    }
+
+    .right-course-item {
+      cursor: pointer;
+    }
+
+    .right-course-item img {
+      max-width: 68px;
+      width: 100%;
+      height: 37px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .right-course-item .course-title {
+      font-size: 11px;
+      color: var(--text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.4;
+      height: 31px;
+    }
+
+    .bottom-section {
+      max-width: 1610px;
+      width: 95%;
+      min-width: 1186px;
+      margin: 0 auto;
+      padding: 0 20px 20px;
+    }
+
+    .series-section {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .offline-section {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .more-link {
+      font-size: 12px;
+      color: var(--btn-color);
+      text-decoration: none;
+    }
+
+    .more-link:hover {
+      text-decoration: underline;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--btn-color);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 15px;
+    }
+
+    .filter-tab {
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding-bottom: 8px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .filter-tab.active {
+      color: var(--btn-color);
+      border-bottom-color: var(--btn-color);
+    }
+
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .series-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .series-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .series-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .series-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .offline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+    }
+
+    .offline-card {
+      background-color: #fafafa;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .offline-image-wrapper {
+      position: relative;
+    }
+
+    .offline-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: white;
+      border-radius: 4px 0 0 0;
+    }
+
+    .offline-badge.company-level {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .offline-badge.dept-level {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .series-tag {
+      display: inline-block;
+      padding: 1px 4px;
+      margin-right: 4px;
+      font-size: 9px;
+      color: white;
+      background-color: var(--btn-color);
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+
+    .offline-card {
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .offline-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .offline-card img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .offline-info {
+      padding: 8px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .offline-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 7px;
+    }
+
+    .offline-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 9px;
+      color: var(--text-secondary);
+      margin-bottom: 9px;
+    }
+
+    .offline-meta span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .offline-btn {
+      width: 30%;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+    }
+
+    .offline-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .video-section {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 15px;
+    }
+
+    .video-filter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      background-color: transparent;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover {
+      background-color: #f5f5f5;
+      color: var(--text-primary);
+    }
+
+    .filter-tab.active {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .sort-options {
+      display: flex;
+      gap: 15px;
+    }
+
+    .sort-option {
+      padding: 6px 10px;
+      background-color: transparent;
+      border: none;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sort-option:hover {
+      color: var(--btn-color);
+    }
+
+    .sort-option.active {
+      color: var(--btn-color);
+      font-weight: 500;
+    }
+
+    .sort-arrow {
+      font-size: 11px;
+      margin-left: 2px;
+      transition: transform 0.2s;
+    }
+
+    .sort-option.active .sort-arrow {
+      transform: rotate(180deg);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+    }
+
+    .video-card {
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .video-image-wrapper {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .video-card img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 10%;
+      min-height: 28px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+      box-sizing: border-box;
+    }
+
+    .play-count {
+      font-size: 11px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .video-duration {
+      font-size: 11px;
+      color: white;
+      font-family: monospace;
+    }
+
+    .video-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 5px;
+    }
+
+    .video-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    .video-footer span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .video-footer span:first-child::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .rating {
+      color: #f59e0b;
+      font-size: 11px;
+    }
+
+    @media (max-width: 1200px) {
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .main-content {
+        flex-direction: column;
+      }
+
+      .left-panel,
+      .center-panel,
+      .right-panel {
+        width: 100%;
+      }
+
+      .right-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .right-card {
+        width: calc(50% - 7.5px);
+      }
+
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .search-content {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .right-panel {
+        flex-direction: column;
+      }
+
+      .right-card {
+        width: 100%;
+      }
+
+      .banner-courses {
+        flex-direction: column;
+      }
+
+      .series-banners {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .featured-grid,
+      .offline-grid,
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 弹窗样式 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 450px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      border: none;
+      background: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #333;
+    }
+
+    .modal-message {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .modal-link {
+      display: block;
+      color: #0066cc;
+      text-decoration: none;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
+
+    .modal-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-confirm-btn {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+      padding: 12px 50px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .modal-confirm-btn:hover {
+      background-color: #ff7875;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent%20clean%20simple&image_size=square" alt="Logo">
+          <span>人周一课</span>
+        </div>
+        <div class="nav-links">
+          <a href="#">我的学习</a>
+          <a href="#" class="active">课程</a>
+          <a href="#">开课</a>
+          <a href="#">课外学习</a>
+          <a href="#">心愿墙</a>
+          <a href="admin-series.html">后台管理</a>
+          <a href="#">完美加速器</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=professional%20user%20avatar%20icon%20simple&image_size=square" alt="User">
+          <span>姓名123456</span>
+          <span class="logout">退出</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="search-section">
+    <div class="search-content">
+      <div class="search-left">
+        <div class="search-box">
+          <input type="text" placeholder="搜索课程名称/分类/标签">
+        </div>
+        <button class="search-btn">搜索</button>
+        <label class="ai-checkbox">
+          <input type="checkbox" id="ai-search-checkbox">
+          <span class="checkmark"></span>
+          <span>开启AI搜索</span>
+        </label>
+      </div>
+      <div class="search-right">
+        <div class="learning-count" id="learningBtn">
+          <span class="icon">🔔</span>
+          <span>学习中课程</span>
+          <span class="badge">5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="learning-overlay" id="learningOverlay" onclick="closeLearningPanel()">
+    <div class="learning-panel-wrapper">
+      <div class="learning-panel">
+        <div class="learning-header">
+          <div class="learning-title">学习中课程</div>
+          <span class="learning-tip">此处记录您学习过程中未学完的课程，未学完的课程系统会定期推送提醒；如需继续学习，可在下方点击对应课程的"不再学习"操作</span>
+          <button class="learning-close" onclick="closeLearningPanel()">×</button>
+        </div>
+        <div class="learning-grid">
+          <div class="learning-card">
+            <div class="learning-image-wrapper">
+              <img src="https://picsum.photos/340/180?random=1" alt="建筑设计">
+              <span class="learning-play">▶ 169</span>
+              <span class="learning-duration">00:43:43</span>
+            </div>
+            <div class="learning-title-text">世界建筑设计发展简史-14</div>
+            <div class="learning-footer">
+              <span class="learning-link">课程简介</span>
+              <button class="learning-action">不再学习</button>
+            </div>
+          </div>
+          <div class="learning-card">
+            <div class="learning-image-wrapper">
+              <img src="https://picsum.photos/340/180?random=2" alt="日语">
+              <span class="learning-play">▶ 69</span>
+              <span class="learning-duration">00:30:30</span>
+            </div>
+            <div class="learning-title-text">日语从零开始-61</div>
+            <div class="learning-footer">
+              <span class="learning-link">课程简介</span>
+              <button class="learning-action">不再学习</button>
+            </div>
+          </div>
+          <div class="learning-card">
+            <div class="learning-image-wrapper">
+              <img src="https://picsum.photos/340/180?random=3" alt="游戏">
+              <span class="learning-play">▶ 467</span>
+              <span class="learning-duration">00:33:31</span>
+            </div>
+            <div class="learning-title-text">Unite恋与深空案例解析</div>
+            <div class="learning-footer">
+              <span class="learning-link">课程简介</span>
+              <button class="learning-action">不再学习</button>
+            </div>
+          </div>
+          <div class="learning-card">
+            <div class="learning-image-wrapper">
+              <img src="https://picsum.photos/340/180?random=4" alt="PS">
+              <span class="learning-play">▶ 53</span>
+              <span class="learning-duration">00:20:26</span>
+            </div>
+            <div class="learning-title-text">PS入门小技巧-66</div>
+            <div class="learning-footer">
+              <span class="learning-link">课程简介</span>
+              <button class="learning-action">不再学习</button>
+            </div>
+          </div>
+          <div class="learning-card">
+            <div class="learning-image-wrapper">
+              <img src="https://picsum.photos/340/180?random=5" alt="技能">
+              <span class="learning-play">▶ 562</span>
+              <span class="learning-duration">00:50:03</span>
+            </div>
+            <div class="learning-title-text">你可能需要一些SKILLs</div>
+            <div class="learning-footer">
+              <span class="learning-link">课程简介</span>
+              <button class="learning-action">不再学习</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="offline-overlay" id="offlineOverlay" onclick="closeOfflinePanel()">
+    <div class="offline-panel-wrapper">
+      <div class="offline-panel" onclick="event.stopPropagation()">
+        <div class="offline-header-float">
+          <div class="offline-title-float">线下课/直播课</div>
+          <span class="offline-tip-float">点击报名按钮即可报名参加课程</span>
+          <button class="offline-close-float" onclick="closeOfflinePanel()">×</button>
+        </div>
+        <div class="offline-filter-float">
+          <div class="filter-tabs-float">
+            <span class="filter-tab-float active">全部</span>
+            <span class="filter-tab-float">已报名</span>
+            <span class="filter-tab-float">公司级</span>
+            <span class="filter-tab-float">部门级</span>
+          </div>
+        </div>
+        <div class="offline-grid-float">
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=10" alt="建筑设计">
+              <span class="offline-badge-float">公司级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">世界建筑设计发展简史-14</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-15 14:00</span>
+                <span>上课地点：北京总部会议室A</span>
+                <span>课程时长：1天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('世界建筑设计发展简史-14')">报名</button>
+            </div>
+          </div>
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=11" alt="日语学习">
+              <span class="offline-badge-float">部门级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">日语从零开始-61</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-16 10:00</span>
+                <span>上课地点：上海分公司3楼培训室</span>
+                <span>课程时长：半天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('日语从零开始-61')">报名</button>
+            </div>
+          </div>
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=12" alt="Node.js">
+              <span class="offline-badge-float">公司级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">Nodejs实战-4</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-17 14:00</span>
+                <span>上课地点：深圳研发中心B栋</span>
+                <span>课程时长：2天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('Nodejs实战-4')">报名</button>
+            </div>
+          </div>
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=13" alt="产品设计">
+              <span class="offline-badge-float">部门级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">产品设计思维工作坊</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-18 09:00</span>
+                <span>上课地点：北京总部创新中心</span>
+                <span>课程时长：1天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('产品设计思维工作坊')">报名</button>
+            </div>
+          </div>
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=14" alt="数据分析">
+              <span class="offline-badge-float">公司级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">数据分析与商业洞察</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-19 14:00</span>
+                <span>上课地点：杭州研发基地</span>
+                <span>课程时长：1天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('数据分析与商业洞察')">报名</button>
+            </div>
+          </div>
+          <div class="offline-card-float">
+            <div class="offline-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=15" alt="领导力">
+              <span class="offline-badge-float">部门级</span>
+            </div>
+            <div class="offline-info-float">
+              <div class="offline-title-float-text">中层管理者领导力提升</div>
+              <div class="offline-meta-float">
+                <span>上课时间：2024-01-20 10:00</span>
+                <span>上课地点：北京总部培训中心</span>
+                <span>课程时长：2天</span>
+              </div>
+              <button class="offline-btn-float" onclick="event.stopPropagation();openModal('中层管理者领导力提升')">报名</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-overlay-panel" id="videoOverlay" onclick="closeVideoPanel()">
+    <div class="video-panel-wrapper">
+      <div class="video-panel" onclick="event.stopPropagation()">
+        <div class="video-header-float">
+          <div class="video-title-float">视频课程</div>
+          <span class="video-tip-float">点击课程即可观看学习</span>
+          <button class="video-close-float" onclick="closeVideoPanel()">×</button>
+        </div>
+        <div class="video-filter-float">
+          <div class="video-filter-tabs-float">
+            <span class="video-filter-tab-float active">全部</span>
+            <span class="video-filter-tab-float">2026</span>
+            <span class="video-filter-tab-float">2025</span>
+            <span class="video-filter-tab-float">2024</span>
+            <span class="video-filter-tab-float">2023</span>
+            <span class="video-filter-tab-float">2022</span>
+            <span class="video-filter-tab-float">2021</span>
+            <span class="video-filter-tab-float">2020</span>
+          </div>
+          <div class="video-sort-float">
+            <button class="video-sort-option-float" data-sort="play">播放量<span class="sort-arrow-float">↑</span></button>
+            <button class="video-sort-option-float active" data-sort="time">发布时间<span class="sort-arrow-float">↓</span></button>
+          </div>
+        </div>
+        <div class="video-grid-float">
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=20" alt="Vue">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 623</span>
+                <span class="video-duration-float">04:32:18</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">Vue3入门到精通</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.9</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=21" alt="MySQL">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 345</span>
+                <span class="video-duration-float">02:56:40</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">MySQL数据库实战-32</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.8</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=22" alt="云原生">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 234</span>
+                <span class="video-duration-float">01:45:33</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">云原生技术入门</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.7</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=23" alt="安全">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 156</span>
+                <span class="video-duration-float">02:12:08</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">网络安全基础</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.9</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=24" alt="可视化">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 312</span>
+                <span class="video-duration-float">03:15:45</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">数据可视化实战</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.6</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=25" alt="建筑设计">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 169</span>
+                <span class="video-duration-float">02:30:00</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">世界建筑设计发展简史-13</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.8</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=26" alt="日语">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 69</span>
+                <span class="video-duration-float">01:45:30</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">日语从零开始-60</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.7</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=27" alt="算法">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 456</span>
+                <span class="video-duration-float">03:20:15</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">算法入门精讲-52</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.9</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=28" alt="React">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 567</span>
+                <span class="video-duration-float">05:10:22</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">React18实战开发</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.8</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=29" alt="Python">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 789</span>
+                <span class="video-duration-float">06:30:00</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">Python数据分析实战</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.9</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=30" alt="TypeScript">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 234</span>
+                <span class="video-duration-float">02:45:10</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">TypeScript完全指南</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.7</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=31" alt="Docker">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 456</span>
+                <span class="video-duration-float">03:15:00</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">Docker容器化实战</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.8</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=32" alt="Git">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 890</span>
+                <span class="video-duration-float">01:20:30</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">Git版本控制入门</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.5</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=33" alt="CSS">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 321</span>
+                <span class="video-duration-float">02:00:45</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">CSS高级技巧进阶</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.6</span>
+            </div>
+          </div>
+          <div class="video-card-float">
+            <div class="video-image-wrapper-float">
+              <img src="https://picsum.photos/340/180?random=34" alt="Node.js">
+              <div class="video-overlay-float">
+                <span class="play-count-float">▶ 567</span>
+                <span class="video-duration-float">04:30:00</span>
+              </div>
+            </div>
+            <div class="video-title-float-text">Node.js后端开发</div>
+            <div class="video-footer-float">
+              <span>课程简介</span>
+              <span class="video-rating-float">4.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="series-overlay-panel" id="seriesOverlay" onclick="closeSeriesPanel()">
+    <div class="series-panel-wrapper">
+      <div class="series-panel" onclick="event.stopPropagation()">
+        <div class="series-header-float">
+          <div class="series-title-float">系列课程</div>
+          <span class="series-tip-float">点击课程即可查看系列详情</span>
+          <button class="series-close-float" onclick="closeSeriesPanel()">×</button>
+        </div>
+        <div class="series-grid-float">
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=40" alt="世界建筑设计发展简史">
+              <div class="series-title-float-text">世界建筑设计发展简史</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=41" alt="中国历史">
+              <div class="series-title-float-text">中国历史</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=42" alt="东西方审美原则差异">
+              <div class="series-title-float-text">东西方审美原则差异</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=43" alt="日语学习系列">
+              <div class="series-title-float-text">日语学习系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=44" alt="编程入门系列">
+              <div class="series-title-float-text">编程入门系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=45" alt="设计创意系列">
+              <div class="series-title-float-text">设计创意系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=46" alt="数据分析系列">
+              <div class="series-title-float-text">数据分析系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=47" alt="领导力培养系列">
+              <div class="series-title-float-text">领导力培养系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=48" alt="云计算技术系列">
+              <div class="series-title-float-text">云计算技术系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=49" alt="网络安全系列">
+              <div class="series-title-float-text">网络安全系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=50" alt="产品管理系列">
+              <div class="series-title-float-text">产品管理系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=51" alt="人工智能系列">
+              <div class="series-title-float-text">人工智能系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=52" alt="移动开发系列">
+              <div class="series-title-float-text">移动开发系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=53" alt="DevOps系列">
+              <div class="series-title-float-text">DevOps系列</div>
+            </div>
+          </a>
+          <a href="series-courses.html" target="_blank" class="series-card-link-float">
+            <div class="series-card-float">
+              <img src="https://picsum.photos/340/180?random=54" alt="用户体验设计系列">
+              <div class="series-title-float-text">用户体验设计系列</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <div class="category-filter">
+        <div class="category-row">
+          <span class="category-icon">◆</span>
+          <span class="category-name">研发运营</span>
+          <span class="sub-category">策划</span>
+          <span class="sub-category submenu-trigger" data-submenu="program">程序</span>
+          <span class="sub-category submenu-trigger" data-submenu="art">美术</span>
+          <span class="sub-category">运维</span>
+          <span class="sub-category">测试</span>
+          <span class="sub-category">运营</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">■</span>
+          <span class="category-name">其他专业</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">发行</span>
+          <span class="sub-category">产品</span>
+          <span class="sub-category">HR</span>
+          <span class="sub-category">财务经营</span>
+          <span class="sub-category">法律</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">●</span>
+          <span class="category-name">行业概览</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">电竞</span>
+          <span class="sub-category">影视</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">教育</span>
+          <span class="sub-category">互联网</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">▲</span>
+          <span class="category-name">综合技能</span>
+          <span class="sub-category">团队管理</span>
+          <span class="sub-category">自我提升</span>
+          <span class="sub-category">软件工具</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">▶</span>
+          <span class="category-name">科学技术</span>
+          <span class="sub-category">AI</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">◀</span>
+          <span class="category-name">人文社科</span>
+          <span class="sub-category">文化题材</span>
+          <span class="sub-category">英语学习</span>
+          <span class="sub-category">其他</span>
+        </div>
+      </div>
+
+      <!-- 程序二级分类浮层 -->
+      <div class="submenu-panel" id="program-submenu">
+        <div class="submenu-title">
+          <span>研发运营</span>
+          <span>&gt;</span>
+          <span>程序</span>
+        </div>
+        <span class="submenu-item">客户端开发</span>
+        <span class="submenu-item">GamePlay&amp;工具</span>
+        <span class="submenu-item">服务端开发</span>
+        <span class="submenu-item">引擎与底层</span>
+        <span class="submenu-item">图形与渲染</span>
+        <span class="submenu-item">技术美术</span>
+        <span class="submenu-item">性能优化</span>
+        <span class="submenu-item">AI技术</span>
+        <span class="submenu-item">生产管线与工具</span>
+        <span class="submenu-item">开发运维</span>
+        <span class="submenu-item">网络安全</span>
+        <span class="submenu-item">物理 &amp; 动作</span>
+        <span class="submenu-item">音频</span>
+        <span class="submenu-item">开发经验</span>
+        <span class="submenu-item">通用技术</span>
+        <span class="submenu-item">其他</span>
+      </div>
+
+      <!-- 美术二级分类浮层 -->
+      <div class="submenu-panel" id="art-submenu">
+        <div class="submenu-title">
+          <span>研发运营</span>
+          <span>&gt;</span>
+          <span>美术</span>
+        </div>
+        <span class="submenu-item">匹配模块</span>
+        <span class="submenu-item">2D场景</span>
+        <span class="submenu-item">2D角色</span>
+        <span class="submenu-item">3D场景地编</span>
+        <span class="submenu-item">3D场景模型</span>
+        <span class="submenu-item">3D角色模型</span>
+        <span class="submenu-item">3D动作</span>
+        <span class="submenu-item">特效</span>
+        <span class="submenu-item">游戏美术概述</span>
+        <span class="submenu-item">美术思维提升</span>
+        <span class="submenu-item">美术风格</span>
+        <span class="submenu-item">世界观</span>
+        <span class="submenu-item">项目制作经验分享</span>
+        <span class="submenu-item">美术素养</span>
+      </div>
+    </div>
+
+    <div class="center-panel">
+      <div class="recommend-banner">
+        <div class="banner-header">
+          <div class="banner-title">推荐好课</div>
+          <div class="banner-nav">
+            <button class="nav-btn" id="banner-prev" onclick="bannerPrev()">‹</button>
+            <div class="banner-pagination" id="banner-pagination">
+              <span class="pagination-dot active" onclick="goToBannerPage(0)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(1)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(2)"></span>
+            </div>
+            <button class="nav-btn" id="banner-next" onclick="bannerNext()">›</button>
+          </div>
+        </div>
+        <div class="banner-courses-wrapper">
+          <div class="banner-courses" id="banner-courses">
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">场景原画</div>
+                <div class="course-title">深度解析</div>
+                <div class="course-desc">从构图到光影的实战技巧</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">TA技术分享</div>
+                <div class="course-title">技术美术分享</div>
+                <div class="course-desc">Shader与渲染管线深度剖析</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">中国历史</div>
+                <div class="course-title">系列课程</div>
+                <div class="course-desc">从先秦到明清的历史全景</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">游戏策划</div>
+                <div class="course-title">数值设计精讲</div>
+                <div class="course-desc">从基础到进阶的数值体系搭建</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">程序开发</div>
+                <div class="course-title">性能优化实战</div>
+                <div class="course-desc">Unity性能优化全攻略</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">音乐制作</div>
+                <div class="course-title">游戏音效设计</div>
+                <div class="course-desc">打造沉浸式听觉体验</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">3D建模</div>
+                <div class="course-title">次世代角色制作</div>
+                <div class="course-desc">PBR材质与贴图全流程</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">运营推广</div>
+                <div class="course-title">买量策略分析</div>
+                <div class="course-desc">投放优化与效果追踪</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">产品设计</div>
+                <div class="course-title">用户体验设计</div>
+                <div class="course-desc">从用户研究到原型设计</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        function showSubmenu(submenuId) {
+          hideAllSubmenus();
+          const submenu = document.getElementById(submenuId);
+          if (submenu) {
+            submenu.style.display = 'flex';
+          }
+        }
+
+        let currentCarouselIndex = 0;
+
+        function showCarouselItem(index) {
+          const items = document.querySelectorAll('.carousel-item');
+          const indicators = document.querySelectorAll('.indicator');
+          
+          items.forEach((item, i) => {
+            item.classList.remove('active');
+            indicators[i].classList.remove('active');
+          });
+          
+          items[index].classList.add('active');
+          indicators[index].classList.add('active');
+          currentCarouselIndex = index;
+        }
+
+        function nextCarousel() {
+          const items = document.querySelectorAll('.carousel-item');
+          const nextIndex = (currentCarouselIndex + 1) % items.length;
+          showCarouselItem(nextIndex);
+        }
+
+        function prevCarousel() {
+          const items = document.querySelectorAll('.carousel-item');
+          const prevIndex = (currentCarouselIndex - 1 + items.length) % items.length;
+          showCarouselItem(prevIndex);
+        }
+
+        function goToCarousel(index) {
+          showCarouselItem(index);
+        }
+
+        function hideAllSubmenus() {
+          const submenus = document.querySelectorAll('.submenu-panel');
+          submenus.forEach(submenu => {
+            submenu.style.display = 'none';
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          const triggers = document.querySelectorAll('.submenu-trigger');
+          const submenus = document.querySelectorAll('.submenu-panel');
+          const leftPanel = document.querySelector('.left-panel');
+
+          triggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', function() {
+              const submenuId = this.getAttribute('data-submenu') + '-submenu';
+              showSubmenu(submenuId);
+            });
+          });
+
+          submenus.forEach(submenu => {
+            submenu.addEventListener('mouseleave', function() {
+              hideAllSubmenus();
+            });
+          });
+
+          document.addEventListener('click', function(event) {
+            const target = event.target;
+            const isInLeftPanel = leftPanel && leftPanel.contains(target);
+            const isInSubmenu = document.querySelector('.submenu-panel:hover') !== null;
+            
+            if (!isInLeftPanel && !isInSubmenu) {
+              hideAllSubmenus();
+            }
+          });
+
+          const filterTabs = document.querySelectorAll('.filter-tab');
+          const sortOptions = document.querySelectorAll('.sort-option');
+
+          filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+              filterTabs.forEach(t => t.classList.remove('active'));
+              this.classList.add('active');
+            });
+          });
+
+          sortOptions.forEach(option => {
+            option.addEventListener('click', function() {
+              const arrow = this.querySelector('.sort-arrow');
+              if (arrow) {
+                arrow.textContent = arrow.textContent === '↑' ? '↓' : '↑';
+              }
+              sortOptions.forEach(o => {
+                o.classList.remove('active');
+                const otherArrow = o.querySelector('.sort-arrow');
+                if (otherArrow && o !== this) {
+                  otherArrow.textContent = '↑';
+                }
+              });
+              this.classList.add('active');
+            });
+          });
+        });
+
+        let currentBannerPage = 0;
+        const totalBannerPages = 3;
+        
+        function updateBanner() {
+          const courses = document.getElementById('banner-courses');
+          const dots = document.querySelectorAll('.pagination-dot');
+          const prevBtn = document.getElementById('banner-prev');
+          const nextBtn = document.getElementById('banner-next');
+          
+          courses.style.transform = `translateX(-${currentBannerPage * 100}%)`;
+          
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentBannerPage);
+          });
+          
+          prevBtn.disabled = currentBannerPage === 0;
+          nextBtn.disabled = currentBannerPage === totalBannerPages - 1;
+        }
+        
+        function bannerPrev() {
+          if (currentBannerPage > 0) {
+            currentBannerPage--;
+            updateBanner();
+          }
+        }
+        
+        function bannerNext() {
+          if (currentBannerPage < totalBannerPages - 1) {
+            currentBannerPage++;
+            updateBanner();
+          }
+        }
+        
+        function goToBannerPage(page) {
+          currentBannerPage = page;
+          updateBanner();
+        }
+      </script>
+    </div>
+
+    <div class="right-panel">
+      <div class="right-card carousel-card">
+        <div class="carousel-container">
+          <div class="carousel-item active">
+            <div class="carousel-badge">猜你喜欢</div>
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nodejs%20programming%20coding%20JavaScript%20web%20development%20minimal&image_size=landscape_16_9" alt="游戏运营">
+            <div class="carousel-overlay">
+              <div class="carousel-title">游戏运营推广入门</div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="carousel-badge">猜你喜欢</div>
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Python%20data%20analysis%20programming%20coding%20minimal&image_size=landscape_16_9" alt="电竞">
+            <div class="carousel-overlay">
+              <div class="carousel-title">电竞赛事与社交流</div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="carousel-badge">猜你喜欢</div>
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20language%20learning%20study%20textbook%20minimal&image_size=landscape_16_9" alt="论语">
+            <div class="carousel-overlay">
+              <div class="carousel-title">论语深度精讲</div>
+            </div>
+          </div>
+          <button class="carousel-prev" onclick="prevCarousel()">‹</button>
+          <button class="carousel-next" onclick="nextCarousel()">›</button>
+          <div class="carousel-indicators">
+            <span class="indicator active" onclick="goToCarousel(0)"></span>
+            <span class="indicator" onclick="goToCarousel(1)"></span>
+            <span class="indicator" onclick="goToCarousel(2)"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="offline-section">
+      <div class="section-header">
+        <div class="section-title">线下课/直播课</div>
+        <div class="header-right">
+          <div class="filter-tabs">
+            <span class="filter-tab active">全部</span>
+            <span class="filter-tab">已报名</span>
+            <span class="filter-tab">公司级</span>
+            <span class="filter-tab">部门级</span>
+          </div>
+          <span href="#" class="more-link" id="offlineBtn" style="cursor: pointer;">更多 ›</span>
+        </div>
+      </div>
+      <div class="offline-grid">
+        <div class="offline-card">
+          <div class="offline-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Python%20data%20analysis%20programming%20coding%20minimal&image_size=landscape_16_9" alt="Python">
+            <span class="offline-badge dept-level">部门级</span>
+          </div>
+          <div class="offline-info">
+            <div class="offline-title">Python数据分析实战</div>
+            <div class="offline-meta">
+              <span>2025-06-11 09:00-10:00</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+        <div class="offline-card">
+          <div class="offline-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=UI%20UX%20design%20interface%20wireframe%20minimal&image_size=landscape_16_9" alt="UI">
+            <span class="offline-badge company-level">公司级</span>
+          </div>
+          <div class="offline-info">
+            <div class="offline-title">UI/UX设计原理</div>
+            <div class="offline-meta">
+              <span>2025-06-12 14:00-15:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+        <div class="offline-card">
+          <div class="offline-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20manager%20business%20strategy%20planning%20minimal&image_size=landscape_16_9" alt="产品">
+            <span class="offline-badge dept-level">部门级</span>
+          </div>
+          <div class="offline-info">
+            <div class="offline-title">产品经理核心能力</div>
+            <div class="offline-meta">
+              <span>2025-06-13 10:00-11:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+        <div class="offline-card">
+          <div class="offline-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=data%20analysis%20business%20intelligence%20dashboard%20minimal&image_size=landscape_16_9" alt="数据">
+            <span class="offline-badge company-level">公司级</span>
+          </div>
+          <div class="offline-info">
+            <div class="offline-title">商业数据分析基础</div>
+            <div class="offline-meta">
+              <span>2025-06-14 15:00-16:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+        <div class="offline-card">
+          <div class="offline-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=machine%20learning%20AI%20neural%20network%20minimal&image_size=landscape_16_9" alt="机器学习">
+            <span class="offline-badge dept-level">部门级</span>
+          </div>
+          <div class="offline-info">
+            <div class="offline-title">机器学习入门实战</div>
+            <div class="offline-meta">
+              <span>2025-06-15 09:00-10:30</span>
+              <span>http://www.171.com/777</span>
+            </div>
+            <button class="offline-btn">报名</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-section">
+      <div class="section-header">
+        <div class="section-title">视频课程</div>
+        <span href="#" class="more-link" id="videoBtn" style="cursor: pointer;">更多 ›</span>
+      </div>
+      <div class="video-filter">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-year="all">全部</button>
+          <button class="filter-tab" data-year="2026">2026</button>
+          <button class="filter-tab" data-year="2025">2025</button>
+          <button class="filter-tab" data-year="2024">2024</button>
+          <button class="filter-tab" data-year="2023">2023</button>
+          <button class="filter-tab" data-year="2022">2022</button>
+          <button class="filter-tab" data-year="2021">2021</button>
+          <button class="filter-tab" data-year="2020">2020</button>
+        </div>
+        <div class="sort-options">
+          <button class="sort-option" data-sort="play">播放量<span class="sort-arrow">↑</span></button>
+          <button class="sort-option active" data-sort="time">发布时间<span class="sort-arrow">↓</span></button>
+        </div>
+      </div>
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Vue%20JavaScript%20web%20development%20coding%20minimal&image_size=landscape_16_9" alt="Vue">
+            <div class="video-overlay">
+              <span class="play-count">▶ 623</span>
+              <span class="video-duration">04:32:18</span>
+            </div>
+          </div>
+          <div class="video-title">Vue3入门到精通</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.9</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=MySQL%20database%20SQL%20server%20minimal&image_size=landscape_16_9" alt="MySQL">
+            <div class="video-overlay">
+              <span class="play-count">▶ 345</span>
+              <span class="video-duration">02:56:40</span>
+            </div>
+          </div>
+          <div class="video-title">MySQL数据库实战-32</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.8</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cloud%20native%20Kubernetes%20docker%20minimal&image_size=landscape_16_9" alt="云原生">
+            <div class="video-overlay">
+              <span class="play-count">▶ 234</span>
+              <span class="video-duration">01:45:33</span>
+            </div>
+          </div>
+          <div class="video-title">云原生技术入门</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.7</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cyber%20security%20network%20protection%20minimal&image_size=landscape_16_9" alt="安全">
+            <div class="video-overlay">
+              <span class="play-count">▶ 156</span>
+              <span class="video-duration">02:12:08</span>
+            </div>
+          </div>
+          <div class="video-title">网络安全基础</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.9</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=data%20visualization%20chart%20graph%20dashboard%20minimal&image_size=landscape_16_9" alt="可视化">
+            <div class="video-overlay">
+              <span class="play-count">▶ 312</span>
+              <span class="video-duration">03:15:45</span>
+            </div>
+          </div>
+          <div class="video-title">数据可视化实战</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.6</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=algorithm%20computer%20science%20coding%20minimal&image_size=landscape_16_9" alt="算法">
+            <div class="video-overlay">
+              <span class="play-count">▶ 567</span>
+              <span class="video-duration">04:45:00</span>
+            </div>
+          </div>
+          <div class="video-title"><span class="series-tag">系列课程</span>算法入门精讲</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=React%20JavaScript%20web%20development%20coding%20minimal&image_size=landscape_16_9" alt="React">
+            <div class="video-overlay">
+              <span class="play-count">▶ 445</span>
+              <span class="video-duration">03:22:18</span>
+            </div>
+          </div>
+          <div class="video-title">React高级开发</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.8</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-image-wrapper">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Go%20programming%20language%20golang%20coding%20minimal&image_size=landscape_16_9" alt="Go">
+            <div class="video-overlay">
+              <span class="play-count">▶ 289</span>
+              <span class="video-duration">02:33:55</span>
+            </div>
+          </div>
+          <div class="video-title">Go语言实战教程</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.7</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Docker%20container%20software%20development%20minimal&image_size=landscape_16_9" alt="Docker">
+          <div class="video-title">Docker容器化部署</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.9</span>
+          </div>
+        </div>
+        <div class="video-card">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Kubernetes%20K8s%20container%20orchestration%20minimal&image_size=landscape_16_9" alt="K8s">
+          <div class="video-title">K8s容器编排</div>
+          <div class="video-footer">
+            <span>课程简介</span>
+            <span class="rating">4.8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="series-section">
+      <div class="section-header">
+        <div class="section-title">系列课程</div>
+        <span href="series-courses.html" target="_blank" class="more-link" id="seriesBtn" style="cursor: pointer;">更多 ›</span>
+      </div>
+      <div class="series-grid">
+        <a href="series-courses.html" target="_blank" class="series-card-link">
+          <div class="series-card">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=architecture%20design%20history%20building%20minimal&image_size=landscape_16_9" alt="世界建筑设计发展简史">
+            <div class="series-title">世界建筑设计发展简史</div>
+          </div>
+        </a>
+        <a href="series-courses.html" target="_blank" class="series-card-link">
+          <div class="series-card">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=city%20urban%20travel%20landscape%20minimal&image_size=landscape_16_9" alt="中国历史">
+            <div class="series-title">中国历史</div>
+          </div>
+        </a>
+        <a href="series-courses.html" target="_blank" class="series-card-link">
+          <div class="series-card">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=photoshop%20graphic%20design%20software%20minimal&image_size=landscape_16_9" alt="东西方审美原则差异">
+            <div class="series-title">东西方审美原则差异</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 弹窗 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-message" id="modalMessage"></div>
+      <a href="#" class="modal-link">查看已报名课程</a>
+      <button class="modal-confirm-btn" onclick="closeModal()">确定</button>
+    </div>
+  </div>
+
+  <script>
+    // 打开学习中课程面板
+    document.getElementById('learningBtn').addEventListener('click', function() {
+      document.getElementById('learningOverlay').classList.add('show');
+    });
+
+    // 关闭学习中课程面板
+    function closeLearningPanel() {
+      document.getElementById('learningOverlay').classList.remove('show');
+    }
+
+    // 打开线下课/直播课面板
+    document.getElementById('offlineBtn').addEventListener('click', function() {
+      document.getElementById('offlineOverlay').classList.add('show');
+    });
+
+    // 关闭线下课/直播课面板
+    function closeOfflinePanel() {
+      document.getElementById('offlineOverlay').classList.remove('show');
+    }
+
+    // 打开视频课程面板
+    document.getElementById('videoBtn').addEventListener('click', function() {
+      document.getElementById('videoOverlay').classList.add('show');
+    });
+
+    // 视频课程卡片点击跳转
+    function addVideoCardClickHandlers() {
+      const videoCards = document.querySelectorAll('.video-card');
+      videoCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+          window.open('video-course-detail.html', '_blank');
+        });
+      });
+
+      const videoCardsFloat = document.querySelectorAll('.video-card-float');
+      videoCardsFloat.forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          e.stopPropagation();
+          window.open('video-course-detail.html', '_blank');
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      addVideoCardClickHandlers();
+    });
+
+    // 关闭视频课程面板
+    function closeVideoPanel() {
+      document.getElementById('videoOverlay').classList.remove('show');
+    }
+
+    // 打开系列课程面板
+    document.getElementById('seriesBtn').addEventListener('click', function() {
+      document.getElementById('seriesOverlay').classList.add('show');
+    });
+
+    // 关闭系列课程面板
+    function closeSeriesPanel() {
+      document.getElementById('seriesOverlay').classList.remove('show');
+    }
+
+    // 打开弹窗
+    function openModal(courseName) {
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalMessage = document.getElementById('modalMessage');
+      modalMessage.textContent = `您已成功报名《${courseName}》,请您按时出席此培训哦~~`;
+      modalOverlay.classList.add('active');
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+      const modalOverlay = document.getElementById('modalOverlay');
+      modalOverlay.classList.remove('active');
+    }
+
+    // 点击遮罩层关闭弹窗
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // 为所有报名按钮添加点击事件
+    document.addEventListener('DOMContentLoaded', function() {
+      const offlineBtns = document.querySelectorAll('.offline-btn');
+      offlineBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.offline-card');
+          const courseTitle = card.querySelector('.offline-title').textContent;
+          openModal(courseTitle);
+        });
+      });
+    });
+  </script>
+  <script src="page-navigation.js"></script>
+</body>
+</html>

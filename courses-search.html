@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课 - 课程搜索结果</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #3a3a3a;
+      --nav-text: #ffffff;
+      --nav-active: #f97316;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #FE6360;
+      --btn-hover: #ea580c;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .nav-bar {
+      background-color: var(--nav-bg);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--nav-text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-logo img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 12px 0;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--nav-active);
+      border-bottom-color: var(--nav-active);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--nav-text);
+      font-size: 14px;
+    }
+
+    .nav-user img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #555;
+    }
+
+    .nav-user .logout {
+      color: #999;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .nav-user .logout:hover {
+      color: var(--nav-active);
+    }
+
+    .search-section {
+      background-color: var(--card-bg);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      height: 32px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-btn {
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .search-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .ai-search {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .ai-search img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .main-content {
+      max-width: 1610px;
+      width: 95%;
+      min-width: 1186px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      gap: 15px;
+      box-sizing: border-box;
+    }
+
+    .left-panel {
+      flex: 0 0 29%;
+      min-width: 440px;
+      background-color: var(--card-bg);
+      position: relative;
+      border-radius: 4px;
+      padding: 12px;
+      height: 200px;
+      box-sizing: border-box;
+    }
+
+    .category-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .category-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .category-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .sub-category {
+      color: #666666;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .sub-category:hover {
+      color: var(--btn-color);
+    }
+
+    .sub-category.has-submenu {
+      position: relative;
+    }
+
+    .submenu-panel {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-left: 0;
+      width: 455px;
+      background-color: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+      padding: 14px;
+      display: none;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 8px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .submenu-title {
+      width: 100%;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .submenu-title span:first-child {
+      color: var(--btn-color);
+    }
+
+    .submenu-title span:last-child {
+      color: #999;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .submenu-item {
+      color: #666;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .submenu-item:hover {
+      background-color: #f0f5ff;
+      color: var(--btn-color);
+    }
+
+    .center-panel {
+      flex: 0 0 40%;
+      min-width: 390px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .recommend-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      padding: 24px;
+      color: white;
+      position: relative;
+      height: 200px;
+    }
+
+    .banner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .banner-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .banner-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .banner-pagination {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pagination-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .pagination-dot.active {
+      background: white;
+    }
+
+    .banner-courses-wrapper {
+      overflow: hidden;
+    }
+
+    .banner-courses {
+      display: flex;
+      gap: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .banner-page {
+      display: flex;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .banner-page > div {
+      flex: 1;
+      min-width: calc((100% - 30px) / 3);
+    }
+
+    .banner-course-item {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .banner-course-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .banner-course-item .course-tag {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .banner-course-item .course-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .banner-course-item .course-desc {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .right-panel {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      height: 200px;
+      box-sizing: border-box;
+    }
+
+    .study-card, .sales-card {
+      width: calc(50% - 4px);
+      height: 100%;
+    }
+
+    .right-card {
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      padding: 10px;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      font-weight: normal;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .right-course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+    }
+
+    .right-course-item {
+      cursor: pointer;
+    }
+
+    .right-course-item img {
+      max-width: 68px;
+      width: 100%;
+      height: 37px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .right-course-item .course-title {
+      font-size: 11px;
+      color: var(--text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.4;
+      height: 31px;
+    }
+
+    .search-result-section {
+      max-width: 1610px;
+      width: 95%;
+      min-width: 1186px;
+      margin: 0 auto;
+      padding: 0 20px 20px;
+    }
+
+    .search-result-header {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .search-result-header span {
+      color: var(--btn-color);
+      font-weight: 500;
+    }
+
+    .highlight-card {
+      width: calc((100% - 38px * 4) / 5);
+      background-color: #fafafa;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      box-sizing: border-box;
+      margin-bottom: 38px;
+    }
+
+    .highlight-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .highlight-card img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .highlight-info {
+      padding: 8px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .highlight-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 7px;
+    }
+
+    .highlight-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 9px;
+      color: var(--text-secondary);
+      margin-bottom: 9px;
+    }
+
+    .highlight-meta span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .highlight-actions {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+    }
+
+    .highlight-btn {
+      width: 30%;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .highlight-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .highlight-btn-outline {
+      width: 30%;
+      background-color: transparent;
+      color: var(--btn-color);
+      border: 1px solid var(--btn-color);
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 5px;
+    }
+
+    .highlight-btn-outline:hover {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 38px;
+    }
+
+    .search-card {
+      background-color: #fafafa;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .search-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-card img {
+      width: 100%;
+      aspect-ratio: 34/18;
+      object-fit: cover;
+      display: block;
+    }
+
+    .search-card-info {
+      padding: 8px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .search-card-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 7px;
+    }
+
+    .search-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--text-secondary);
+    }
+
+    .search-card-footer span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .search-card-footer span:first-child::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .rating {
+      color: #f59e0b;
+      font-size: 10px;
+    }
+
+    .course-tag {
+      display: inline-block;
+      background-color: #fff2f0;
+      color: #ff4d4f;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      margin-right: 5px;
+    }
+
+    @media (max-width: 1200px) {
+      .search-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .main-content {
+        flex-direction: column;
+      }
+
+      .left-panel,
+      .center-panel,
+      .right-panel {
+        width: 100%;
+      }
+
+      .right-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .right-card {
+        width: calc(50% - 7.5px);
+      }
+
+      .search-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .search-content {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .right-panel {
+        flex-direction: column;
+      }
+
+      .right-card {
+        width: 100%;
+      }
+
+      .banner-courses {
+        flex-direction: column;
+      }
+
+      .highlight-card {
+        flex-direction: column;
+      }
+
+      .highlight-card img {
+        width: 100%;
+      }
+
+      .search-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .search-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 450px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      border: none;
+      background: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #333;
+    }
+
+    .modal-message {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .modal-link {
+      display: block;
+      color: #0066cc;
+      text-decoration: none;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
+
+    .modal-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-confirm-btn {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+      padding: 12px 50px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .modal-confirm-btn:hover {
+      background-color: #ff7875;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=modern%20corporate%20logo%20design%20with%20red%20orange%20accent%20clean%20simple&image_size=square" alt="Logo">
+          <span>人周一课</span>
+        </div>
+        <div class="nav-links">
+          <a href="#">我的学习</a>
+          <a href="#" class="active">课程</a>
+          <a href="#">开课</a>
+          <a href="#">课外学习</a>
+          <a href="#">心愿墙</a>
+          <a href="#">后台管理</a>
+          <a href="#">完美加速器</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user">
+          <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=professional%20user%20avatar%20icon%20simple&image_size=square" alt="User">
+          <span>姓名123456</span>
+          <span class="logout">退出</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="search-section">
+    <div class="search-content">
+      <div class="search-box">
+        <input type="text" placeholder="搜索课程名称/分类/标签" value="gameplay工具">
+      </div>
+      <button class="search-btn">搜索</button>
+      <div class="ai-search">
+        <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=AI%20search%20icon%20blue%20color%20simple&image_size=square" alt="AI">
+        <span>开启AI搜索</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <div class="category-filter">
+        <div class="category-row">
+          <span class="category-icon">◆</span>
+          <span class="category-name">研发运营</span>
+          <span class="sub-category">策划</span>
+          <span class="sub-category submenu-trigger" data-submenu="program">程序</span>
+          <span class="sub-category submenu-trigger" data-submenu="art">美术</span>
+          <span class="sub-category">运维</span>
+          <span class="sub-category">测试</span>
+          <span class="sub-category">运营</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">■</span>
+          <span class="category-name">其他专业</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">市场</span>
+          <span class="sub-category">发行</span>
+          <span class="sub-category">产品</span>
+          <span class="sub-category">HR</span>
+          <span class="sub-category">财务经营</span>
+          <span class="sub-category">法律</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">●</span>
+          <span class="category-name">行业概览</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">游戏</span>
+          <span class="sub-category">电竞</span>
+          <span class="sub-category">影视</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">教育</span>
+          <span class="sub-category">互联网</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">▲</span>
+          <span class="category-name">综合技能</span>
+          <span class="sub-category">团队管理</span>
+          <span class="sub-category">自我提升</span>
+          <span class="sub-category">软件工具</span>
+          <span class="sub-category">动画</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">▶</span>
+          <span class="category-name">科学技术</span>
+          <span class="sub-category">AI</span>
+          <span class="sub-category">其他</span>
+        </div>
+
+        <div class="category-row">
+          <span class="category-icon">◀</span>
+          <span class="category-name">人文社科</span>
+          <span class="sub-category">文化题材</span>
+          <span class="sub-category">英语学习</span>
+          <span class="sub-category">其他</span>
+        </div>
+      </div>
+
+      <div class="submenu-panel" id="program-submenu">
+        <div class="submenu-title">
+          <span>研发运营</span>
+          <span>&gt;</span>
+          <span>程序</span>
+        </div>
+        <span class="submenu-item">客户端开发</span>
+        <span class="submenu-item">GamePlay&amp;工具</span>
+        <span class="submenu-item">服务端开发</span>
+        <span class="submenu-item">引擎与底层</span>
+        <span class="submenu-item">图形与渲染</span>
+        <span class="submenu-item">技术美术</span>
+        <span class="submenu-item">性能优化</span>
+        <span class="submenu-item">AI技术</span>
+        <span class="submenu-item">生产管线与工具</span>
+        <span class="submenu-item">开发运维</span>
+        <span class="submenu-item">网络安全</span>
+        <span class="submenu-item">物理 &amp; 动作</span>
+        <span class="submenu-item">音频</span>
+        <span class="submenu-item">开发经验</span>
+        <span class="submenu-item">通用技术</span>
+        <span class="submenu-item">其他</span>
+      </div>
+
+      <div class="submenu-panel" id="art-submenu">
+        <div class="submenu-title">
+          <span>研发运营</span>
+          <span>&gt;</span>
+          <span>美术</span>
+        </div>
+        <span class="submenu-item">匹配模块</span>
+        <span class="submenu-item">2D场景</span>
+        <span class="submenu-item">2D角色</span>
+        <span class="submenu-item">3D场景地编</span>
+        <span class="submenu-item">3D场景模型</span>
+        <span class="submenu-item">3D角色模型</span>
+        <span class="submenu-item">3D动作</span>
+        <span class="submenu-item">特效</span>
+        <span class="submenu-item">游戏美术概述</span>
+        <span class="submenu-item">美术思维提升</span>
+        <span class="submenu-item">美术风格</span>
+        <span class="submenu-item">世界观</span>
+        <span class="submenu-item">项目制作经验分享</span>
+        <span class="submenu-item">美术素养</span>
+      </div>
+    </div>
+
+    <div class="center-panel">
+      <div class="recommend-banner">
+        <div class="banner-header">
+          <div class="banner-title">推荐好课</div>
+          <div class="banner-nav">
+            <button class="nav-btn" id="banner-prev" onclick="bannerPrev()">‹</button>
+            <div class="banner-pagination" id="banner-pagination">
+              <span class="pagination-dot active" onclick="goToBannerPage(0)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(1)"></span>
+              <span class="pagination-dot" onclick="goToBannerPage(2)"></span>
+            </div>
+            <button class="nav-btn" id="banner-next" onclick="bannerNext()">›</button>
+          </div>
+        </div>
+        <div class="banner-courses-wrapper">
+          <div class="banner-courses" id="banner-courses">
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">场景原画</div>
+                <div class="course-title">深度解析</div>
+                <div class="course-desc">从构图到光影的实战技巧</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">TA技术分享</div>
+                <div class="course-title">技术美术分享</div>
+                <div class="course-desc">Shader与渲染管线深度剖析</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">中国历史</div>
+                <div class="course-title">系列课程</div>
+                <div class="course-desc">从先秦到明清的历史全景</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">游戏策划</div>
+                <div class="course-title">数值设计精讲</div>
+                <div class="course-desc">从基础到进阶的数值体系搭建</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">程序开发</div>
+                <div class="course-title">性能优化实战</div>
+                <div class="course-desc">Unity性能优化全攻略</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">音乐制作</div>
+                <div class="course-title">游戏音效设计</div>
+                <div class="course-desc">打造沉浸式听觉体验</div>
+              </div>
+            </div>
+            <div class="banner-page">
+              <div class="banner-course-item">
+                <div class="course-tag">3D建模</div>
+                <div class="course-title">次世代角色制作</div>
+                <div class="course-desc">PBR材质与贴图全流程</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">运营推广</div>
+                <div class="course-title">买量策略分析</div>
+                <div class="course-desc">投放优化与效果追踪</div>
+              </div>
+              <div class="banner-course-item">
+                <div class="course-tag">产品设计</div>
+                <div class="course-title">用户体验设计</div>
+                <div class="course-desc">从用户研究到原型设计</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="right-card study-card">
+        <div class="panel-title">学习中</div>
+        <div class="right-course-grid">
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20robot%20hand%20technology%20future%20concept%20minimal&image_size=square" alt="AI">
+            <div class="course-title">当AI开始"动手"</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=programming%20coding%20skills%20computer%20code%20minimal&image_size=square" alt="编程">
+            <div class="course-title">你可能需要一些SKILLS</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20design%20UI%20interface%20development%20minimal&image_size=square" alt="游戏设计">
+            <div class="course-title">游戏外观设计态度</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=business%20meeting%20conference%20office%20professional%20minimal&image_size=square" alt="会议">
+            <div class="course-title">高效会议管理</div>
+          </div>
+        </div>
+      </div>
+      <div class="right-card sales-card">
+        <div class="panel-title">猜你喜欢</div>
+        <div class="right-course-grid">
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=electric%20car%20vehicle%20automobile%20technology%20minimal&image_size=square" alt="电动汽车">
+            <div class="course-title">电动汽车与智能网联</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=e-sports%20gaming%20competition%20tournament%20minimal&image_size=square" alt="电竞">
+            <div class="course-title">电竞赛事与社交流</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20ancient%20book%20philosophy%20text%20minimal&image_size=square" alt="论语">
+            <div class="course-title">论语深度精讲</div>
+          </div>
+          <div class="right-course-item">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20marketing%20business%20strategy%20minimal&image_size=square" alt="游戏运营">
+            <div class="course-title">游戏运营推广入门</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-result-section">
+    <div class="search-result-header">
+      搜索 "<span>gameplay工具</span>" 共找到 <span>5</span> 条结果
+    </div>
+
+    <div class="highlight-card">
+      <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20game%20development%20technology%20futuristic%20abstract%20dark%20blue%20purple&image_size=landscape_16_9" alt="AI出图小技巧">
+      <div class="highlight-info">
+        <div class="highlight-title">AI出图小技巧-3</div>
+        <div class="highlight-meta">
+          <span>2025-06-24 17:00-18:00</span>
+          <span>http://www.171.com/777</span>
+        </div>
+        <button class="highlight-btn">报名</button>
+      </div>
+    </div>
+
+    <div class="search-grid">
+      <div class="search-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20development%20gamplay%20system%20design%20blue%20tech&image_size=landscape_16_9" alt="Gameplay">
+        <div class="search-card-info">
+          <div class="search-card-title">使用动画曲线实现Gameplay驱动的高精度角色移动系统</div>
+          <div class="search-card-footer">
+            <span>课程简介</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="search-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Unreal%20Engine%20Niagara%20particle%20system%20dark%20blue&image_size=landscape_16_9" alt="Niagara">
+        <div class="search-card-info">
+          <div class="search-card-title">Niagara引擎扩展</div>
+          <div class="search-card-footer">
+            <span>课程简介</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="search-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20ecs%20architecture%20programming%20code%20dark%20theme&image_size=landscape_16_9" alt="ECS">
+        <div class="search-card-info">
+          <div class="search-card-title">基于ECS架构的通用GamePlay战斗框架简介</div>
+          <div class="search-card-footer">
+            <span>课程简介</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="search-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20ability%20system%20gameplay%20mechanics%20purple%20blue&image_size=landscape_16_9" alt="GameplayAbility">
+        <div class="search-card-info">
+          <div class="search-card-title">GameplayAbility框架在幻塔手游中的应用和优化</div>
+          <div class="search-card-footer">
+            <span>课程简介</span>
+            <span class="rating">5.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-message" id="modalMessage"></div>
+      <a href="#" class="modal-link">查看已报名课程</a>
+      <button class="modal-confirm-btn" onclick="closeModal()">确定</button>
+    </div>
+  </div>
+
+  <script>
+    function showSubmenu(submenuId) {
+      hideAllSubmenus();
+      const submenu = document.getElementById(submenuId);
+      if (submenu) {
+        submenu.style.display = 'flex';
+      }
+    }
+
+    function hideAllSubmenus() {
+      const submenus = document.querySelectorAll('.submenu-panel');
+      submenus.forEach(submenu => {
+        submenu.style.display = 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const triggers = document.querySelectorAll('.submenu-trigger');
+      const submenus = document.querySelectorAll('.submenu-panel');
+      const leftPanel = document.querySelector('.left-panel');
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', function() {
+          const submenuId = this.getAttribute('data-submenu') + '-submenu';
+          showSubmenu(submenuId);
+        });
+      });
+
+      submenus.forEach(submenu => {
+        submenu.addEventListener('mouseleave', function() {
+          hideAllSubmenus();
+        });
+      });
+
+      document.addEventListener('click', function(event) {
+        const target = event.target;
+        const isInLeftPanel = leftPanel && leftPanel.contains(target);
+        const isInSubmenu = document.querySelector('.submenu-panel:hover') !== null;
+        
+        if (!isInLeftPanel && !isInSubmenu) {
+          hideAllSubmenus();
+        }
+      });
+    });
+
+    let currentBannerPage = 0;
+    const totalBannerPages = 3;
+    
+    function updateBanner() {
+      const courses = document.getElementById('banner-courses');
+      const dots = document.querySelectorAll('.pagination-dot');
+      const prevBtn = document.getElementById('banner-prev');
+      const nextBtn = document.getElementById('banner-next');
+      
+      courses.style.transform = `translateX(-${currentBannerPage * 100}%)`;
+      
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentBannerPage);
+      });
+      
+      prevBtn.disabled = currentBannerPage === 0;
+      nextBtn.disabled = currentBannerPage === totalBannerPages - 1;
+    }
+    
+    function bannerPrev() {
+      if (currentBannerPage > 0) {
+        currentBannerPage--;
+        updateBanner();
+      }
+    }
+    
+    function bannerNext() {
+      if (currentBannerPage < totalBannerPages - 1) {
+        currentBannerPage++;
+        updateBanner();
+      }
+    }
+    
+    function goToBannerPage(page) {
+      currentBannerPage = page;
+      updateBanner();
+    }
+
+    function openModal(courseName) {
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalMessage = document.getElementById('modalMessage');
+      modalMessage.textContent = `您已成功报名《${courseName}》,请您按时出席此培训哦~~`;
+      modalOverlay.classList.add('active');
+    }
+
+    function closeModal() {
+      const modalOverlay = document.getElementById('modalOverlay');
+      modalOverlay.classList.remove('active');
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const highlightBtn = document.querySelector('.highlight-btn');
+      if (highlightBtn) {
+        highlightBtn.addEventListener('click', function() {
+          const title = document.querySelector('.highlight-title').textContent;
+          openModal(title);
+        });
+      }
+    });
+  </script>
+  <script src="page-navigation.js"></script>
+</body>
+</html>

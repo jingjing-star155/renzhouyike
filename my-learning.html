@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课 - 我的学习</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #2f3444;
+      --nav-text: #ffffff;
+      --nav-active: #FE6360;
+      --text-primary: #30384d;
+      --text-secondary: #6b7280;
+      --border-color: #edf0f5;
+      --card-bg: #ffffff;
+      --orange: #ff9d35;
+      --red: #ff5a5f;
+      --blue: #497be8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-primary);
+      background: linear-gradient(115deg, #eef4ff 0%, #f8fbff 40%, #fff4ef 100%);
+      min-height: 100vh;
+      font-size: 14px;
+    }
+
+    .nav-bar {
+      height: 56px;
+      background: var(--nav-bg);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      color: var(--nav-text);
+    }
+
+    .nav-content {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .nav-logo img {
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      position: relative;
+      color: #fff;
+      text-decoration: none;
+      padding: 20px 0 18px;
+      font-size: 14px;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: var(--nav-active);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .accelerator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .bolt {
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--red);
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .logout {
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .page-wrap {
+      width: 1220px;
+      margin: 44px auto 60px;
+    }
+
+    .archive-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 4px;
+      min-height: 372px;
+      padding: 28px 56px 36px;
+      box-shadow: 0 10px 28px rgba(86, 101, 150, 0.08);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 42px;
+    }
+
+    .top-actions {
+      position: absolute;
+      top: 26px;
+      right: 26px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .message-wrap {
+      position: relative;
+    }
+
+    .message-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: #f2f5fb;
+      color: #66708a;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .message-dot {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff414c;
+    }
+
+    .message-popover {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      width: 300px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(64, 76, 112, 0.16);
+      z-index: 10;
+    }
+
+    .message-popover.active {
+      display: block;
+    }
+
+    .message-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .message-item {
+      padding: 10px 0;
+      color: #4e586d;
+      border-top: 1px solid #eef1f6;
+      line-height: 20px;
+    }
+
+    .year-switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 18px;
+      background: #f2f5fb;
+      color: #47516b;
+      font-weight: 700;
+    }
+
+    .year-arrow {
+      color: #b4bccd;
+      font-size: 14px;
+    }
+
+    .archive-content {
+      display: grid;
+      grid-template-columns: 1fr 360px 1fr;
+      align-items: center;
+      gap: 52px;
+    }
+
+    .stat-label {
+      color: #596276;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .study-hours {
+      font-size: 58px;
+      line-height: 1;
+      color: #313a63;
+      letter-spacing: -2px;
+    }
+
+    .unit {
+      font-size: 16px;
+      margin-left: 6px;
+      color: #30384d;
+      letter-spacing: 0;
+    }
+
+    .hours-breakdown {
+      display: flex;
+      gap: 64px;
+      margin-top: 28px;
+    }
+
+    .breakdown-label {
+      color: #30384d;
+      margin-bottom: 3px;
+    }
+
+    .breakdown-value {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .breakdown-value.orange {
+      color: #ff941f;
+    }
+
+    .breakdown-value.green {
+      color: #18bf6f;
+    }
+
+    .progress-ring {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-ring::before {
+      content: '';
+      position: absolute;
+      inset: 14px;
+      border-radius: 50%;
+      background: conic-gradient(#ff9d35 0deg 331deg, #fff2df 331deg 360deg);
+      box-shadow: inset 0 0 0 54px #fff;
+    }
+
+    .progress-ring::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 4px solid #ffa33e;
+      clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    }
+
+    .progress-dot {
+      position: absolute;
+      left: 82px;
+      top: 16px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff7e1f;
+      border: 4px solid #fff;
+      z-index: 2;
+    }
+
+    .progress-center {
+      position: relative;
+      z-index: 1;
+      width: 142px;
+      height: 142px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(225, 151, 64, 0.15);
+    }
+
+    .progress-title {
+      color: #65708a;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .progress-number {
+      font-size: 58px;
+      line-height: 1;
+      color: #313a63;
+      font-weight: 500;
+    }
+
+    .progress-number span {
+      font-size: 22px;
+      margin-left: 4px;
+    }
+
+    .progress-year {
+      color: #9aa3b6;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .target-label {
+      color: #596276;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .target-hours {
+      font-size: 58px;
+      line-height: 1;
+      color: #313a63;
+      letter-spacing: -2px;
+    }
+
+    .target-tags {
+      display: grid;
+      grid-template-columns: repeat(2, 118px);
+      gap: 10px 14px;
+      margin-top: 26px;
+    }
+
+    .target-tag {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      border-radius: 15px;
+      background: #f6f8fc;
+      color: #65708a;
+      font-weight: 600;
+    }
+
+    .target-tag strong {
+      color: #ff414c;
+    }
+
+    .target-tag .zero {
+      color: #313a63;
+    }
+
+    .guide-tab {
+      position: fixed;
+      right: 132px;
+      top: 236px;
+      width: 34px;
+      padding: 8px 6px;
+      border-radius: 4px;
+      background: #fff;
+      color: #576070;
+      text-align: center;
+      line-height: 18px;
+      box-shadow: 0 6px 16px rgba(80, 90, 120, 0.08);
+    }
+
+    .record-card {
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 4px;
+      padding: 22px 28px 34px;
+      box-shadow: 0 10px 28px rgba(86, 101, 150, 0.06);
+    }
+
+    .record-tabs {
+      display: flex;
+      gap: 28px;
+      border-bottom: 1px solid #eef1f6;
+      margin-bottom: 20px;
+    }
+
+    .record-tab {
+      position: relative;
+      padding: 0 0 14px;
+      color: #566070;
+      font-weight: 700;
+    }
+
+    .record-tab.active {
+      color: #20283b;
+    }
+
+    .record-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      background: var(--nav-active);
+    }
+
+    .sub-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .sub-tab {
+      padding: 8px 14px;
+      border-radius: 4px;
+      color: #697386;
+      background: #f4f6fb;
+      font-weight: 600;
+    }
+
+    .sub-tab.active {
+      color: #30384d;
+      background: #fff0f0;
+    }
+
+    .record-more {
+      float: right;
+      margin-top: -42px;
+      color: #697386;
+      text-decoration: none;
+    }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .record-table th,
+    .record-table td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #eef1f6;
+      text-align: left;
+      font-size: 13px;
+      color: #495366;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .record-table th {
+      color: #566070;
+      font-weight: 700;
+      background: #fff;
+    }
+
+    .record-table a {
+      color: #4f7ff0;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20corporate%20logo%20renzhouyike%20red%20orange%20bold%20font&image_size=square" alt="Logo">
+          <span>人周一课</span>
+        </div>
+        <div class="nav-links">
+          <a href="my-learning.html" class="active">我的学习</a>
+          <a href="courses-v2.html">课程</a>
+          <a href="#">开课</a>
+          <a href="#">课外学习</a>
+          <a href="#">心愿墙</a>
+          <a href="#">团队学习</a>
+          <a href="admin-video-course.html">后台管理</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="accelerator">🌐 <span>完美加速器</span></div>
+        <div class="user-info"><span class="bolt">⚡</span><span>赵静 112150</span></div>
+        <span class="logout">登出</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-wrap">
+    <section class="archive-card">
+      <h1 class="card-title">年度学习档案</h1>
+      <div class="top-actions">
+        <div class="message-wrap">
+          <button class="message-btn" id="messageBtn">💬</button>
+          <span class="message-dot"></span>
+          <div class="message-popover" id="messagePopover">
+            <div class="message-title">消息提醒</div>
+            <div class="message-item">您讲的课程xx收到了1条评论</div>
+            <div class="message-item">您讲的课程xxxx收到了1条评论</div>
+          </div>
+        </div>
+        <div class="year-switch"><span class="year-arrow">◀</span><span>2026</span><span class="year-arrow">▶</span></div>
+      </div>
+      <div class="archive-content">
+        <div class="study-stat">
+          <div class="stat-label">本年度学习总时长</div>
+          <div class="study-hours">36<span class="unit">小时</span></div>
+          <div class="hours-breakdown">
+            <div>
+              <div class="breakdown-label">课堂学习</div>
+              <div class="breakdown-value orange">36<span class="unit">小时</span></div>
+            </div>
+            <div>
+              <div class="breakdown-label">课外学习 ⓘ</div>
+              <div class="breakdown-value green">0<span class="unit">小时</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-ring">
+          <div class="progress-dot"></div>
+          <div class="progress-center">
+            <div class="progress-title">年度完成率</div>
+            <div class="progress-number">80<span>%</span></div>
+            <div class="progress-year">2026年度</div>
+          </div>
+        </div>
+
+        <div class="target-stat">
+          <div class="target-label">本年度学习目标 ⓘ</div>
+          <div class="target-hours">45<span class="unit">小时</span></div>
+          <div class="target-tags">
+            <div class="target-tag"><span>已报课程</span><strong>1</strong></div>
+            <div class="target-tag"><span>学习中课程</span><strong>47</strong></div>
+            <div class="target-tag"><span>待讲课程</span><strong class="zero">0</strong></div>
+            <div class="target-tag"><span>我的收藏</span><strong>45</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="record-card">
+      <div class="record-tabs">
+        <div class="record-tab active">学习记录</div>
+        <div class="record-tab">讲课记录</div>
+      </div>
+      <div class="sub-tabs">
+        <div class="sub-tab active">课堂学习</div>
+        <div class="sub-tab">课外学习</div>
+      </div>
+      <a href="#" class="record-more">往期记录 &gt;</a>
+      <table class="record-table">
+        <thead>
+          <tr>
+            <th style="width: 26%;">课程名称</th>
+            <th style="width: 8%;">学时</th>
+            <th style="width: 10%;">课后回顾</th>
+            <th style="width: 10%;">课程评价</th>
+            <th style="width: 10%;">课程资料</th>
+            <th style="width: 20%;">上课时间</th>
+            <th style="width: 10%;">课程分类</th>
+            <th style="width: 8%;">上课方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>世界建筑设计发展简史-20</td>
+            <td>1</td>
+            <td><a href="#">补回顾</a></td>
+            <td><a href="#">待反馈</a></td>
+            <td>无</td>
+            <td>2026.07.16 17:00~18:00</td>
+            <td>游戏/美术</td>
+            <td>直播</td>
+          </tr>
+          <tr>
+            <td>日语从零开始-66</td>
+            <td>1</td>
+            <td><a href="#">补回顾</a></td>
+            <td><a href="#">待反馈</a></td>
+            <td>无</td>
+            <td>2026.07.13 15:30~16:30</td>
+            <td>日语学习</td>
+            <td>直播</td>
+          </tr>
+          <tr>
+            <td>AI工具效率提升实战</td>
+            <td>1.5</td>
+            <td><a href="#">已完成</a></td>
+            <td><a href="#">已评价</a></td>
+            <td><a href="#">查看</a></td>
+            <td>2026.07.08 19:00~20:30</td>
+            <td>自我提升</td>
+            <td>录播</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="guide-tab">ⓘ<br>用户指引</div>
+
+  <script>
+    const messageBtn = document.getElementById('messageBtn');
+    const messagePopover = document.getElementById('messagePopover');
+
+    messageBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      messagePopover.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      messagePopover.classList.remove('active');
+    });
+
+    messagePopover.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+  </script>
+  <script src="page-navigation.js"></script>
+</body>
+</html>

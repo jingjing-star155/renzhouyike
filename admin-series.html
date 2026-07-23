@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人周一课 - 后台管理-系列课程管理</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nav-bg: #3a3a3a;
+      --nav-text: #ffffff;
+      --nav-active: #FE6360;
+      --bg-color: #f5f5f5;
+      --card-bg: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --btn-color: #FE6360;
+      --btn-hover: #E55050;
+      --sub-nav-bg: #e8e8e8;
+      --sub-nav-active: #f97316;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .nav-bar {
+      background-color: var(--nav-bg);
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-content {
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--nav-text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 18px 0;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--nav-active);
+      border-bottom-color: var(--nav-active);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--nav-text);
+      font-size: 14px;
+    }
+
+    .nav-user img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #555;
+    }
+
+    .nav-user .logout {
+      color: #999;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .nav-user .logout:hover {
+      color: var(--nav-active);
+    }
+
+    .sub-nav-bar {
+      background-color: var(--sub-nav-bg);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 8px 20px;
+      border-bottom: 1px solid #d0d0d0;
+    }
+
+    .sub-nav-content {
+      max-width: 1400px;
+      width: 95%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .sub-nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sub-nav-links a {
+      padding: 8px 14px;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .sub-nav-links a:hover {
+      color: var(--text-primary);
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .sub-nav-links a.active {
+      color: var(--sub-nav-active);
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .main-container {
+      max-width: 1400px;
+      width: 95%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .search-panel {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .search-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-item label {
+      font-size: 14px;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .search-item input[type="text"],
+    .search-item select,
+    .search-item input[type="date"] {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    .search-item input[type="text"]:focus,
+    .search-item select:focus,
+    .search-item input[type="date"]:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .search-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .btn-secondary {
+      background-color: #f0f0f0;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e8e8e8;
+    }
+
+    .btn-search {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    .btn-search:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .table-container {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table th {
+      background-color: #fafafa;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .series-name-link {
+      color: #1890ff;
+      text-decoration: none;
+    }
+
+    .series-name-link:hover {
+      text-decoration: underline;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .action-btn.edit {
+      background-color: #fff;
+      border: 1px solid #1890ff;
+      color: #1890ff;
+    }
+
+    .action-btn.edit:hover {
+      background-color: #e6f7ff;
+    }
+
+    .action-btn.delete {
+      background-color: #fff;
+      border: 1px solid #ff4d4f;
+      color: #ff4d4f;
+    }
+
+    .action-btn.delete:hover {
+      background-color: #fff2f0;
+    }
+
+    .action-btn.detail {
+      background-color: #fff;
+      border: 1px solid #52c41a;
+      color: #52c41a;
+    }
+
+    .action-btn.detail:hover {
+      background-color: #f6ffed;
+    }
+
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 15px 20px;
+      gap: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-right: auto;
+    }
+
+    .pagination-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background-color: #f5f5f5;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-btn.active {
+      background-color: var(--btn-color);
+      color: white;
+      border-color: var(--btn-color);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background-color: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #999;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-group label.required::after {
+      content: '*';
+      color: var(--btn-color);
+      margin-left: 4px;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group .tip {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .status-badge.active {
+      background-color: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+    }
+
+    .status-badge.inactive {
+      background-color: #fff2f0;
+      color: #ff4d4f;
+      border: 1px solid #ffccc7;
+    }
+
+    .confirm-modal {
+      max-width: 400px;
+    }
+
+    .confirm-message {
+      padding: 20px;
+      text-align: center;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .radio-item input[type="radio"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    .radio-item label {
+      margin-bottom: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .course-list-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .course-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .course-list-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .course-list-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .course-list-table th,
+    .course-list-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+
+    .course-list-table th {
+      background-color: #fafafa;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .course-list-table tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .delete-course-btn {
+      color: #ff4d4f;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 3px;
+      transition: background-color 0.2s;
+    }
+
+    .delete-course-btn:hover {
+      background-color: #fff2f0;
+    }
+
+    .mini-modal {
+      max-width: 450px;
+    }
+
+    .course-input-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .course-input-row .form-group {
+      flex: 1;
+    }
+
+    .course-id-input,
+    .course-name-input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 3px;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    .course-id-input:focus,
+    .course-name-input:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+
+    .course-name-input[readonly] {
+      background-color: #fafafa;
+      color: var(--text-secondary);
+    }
+
+    .add-course-btn {
+      color: #52c41a;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 3px;
+      transition: background-color 0.2s;
+      margin-right: 8px;
+    }
+
+    .add-course-btn:hover {
+      background-color: #f6ffed;
+    }
+
+    .category-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .category-select {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    .category-select:focus {
+      outline: none;
+      border-color: var(--btn-color);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20corporate%20logo%20renzhouyike%20red%20orange%20bold%20font&image_size=square" alt="Logo">
+          <span>人周一课</span>
+        </div>
+        <div class="nav-links">
+          <a href="#">我的学习</a>
+          <a href="courses-v2.html">课程</a>
+          <a href="#">开课</a>
+          <a href="#">课外学习</a>
+          <a href="#">心愿墙</a>
+          <a href="#">团队学习</a>
+          <a href="admin-series.html" class="active">后台管理</a>
+          <a href="#">完美加速器</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user">
+          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20user%20avatar%20icon&image_size=square" alt="User">
+          <span>管理员 112150</span>
+          <span class="logout">登出</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="sub-nav-bar">
+    <div class="sub-nav-content">
+      <div class="sub-nav-links">
+        <a href="#">公司课程管理</a>
+        <a href="#">自助开课管理</a>
+        <a href="admin-video-course.html">视频课程管理</a>
+        <a href="admin-series.html" class="active">系列课程管理</a>
+        <a href="#">课堂学习记录</a>
+        <a href="#">课外学习记录</a>
+        <a href="#">课程评价管理</a>
+        <a href="#">心愿管理</a>
+        <a href="#">运营管理</a>
+        <a href="#">系统设置</a>
+        <a href="#">课后回顾记录</a>
+        <a href="admin-course-comments.html">课程评论管理</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div class="page-header">
+      <h1 class="page-title">系列课程管理</h1>
+    </div>
+
+    <div class="search-panel">
+      <div class="search-row">
+        <div class="search-item">
+          <label>系列名称</label>
+          <input type="text" id="searchName" placeholder="请输入系列名称">
+        </div>
+        <div class="search-item">
+          <label>课程类别</label>
+          <select id="searchCategory">
+            <option value="">全部</option>
+            <option value="研发运营">研发运营</option>
+            <option value="其他专业">其他专业</option>
+            <option value="行业概览">行业概览</option>
+            <option value="综合技能">综合技能</option>
+            <option value="科学技术">科学技术</option>
+            <option value="人文社科">人文社科</option>
+          </select>
+        </div>
+        <div class="search-item">
+          <label>状态</label>
+          <select id="searchStatus">
+            <option value="">全部</option>
+            <option value="active">启用</option>
+            <option value="inactive">禁用</option>
+          </select>
+        </div>
+        <div class="search-item">
+          <label>创建时间</label>
+          <input type="date" id="searchStartDate">
+          <span style="color: #999; margin: 0 4px;">至</span>
+          <input type="date" id="searchEndDate">
+        </div>
+        <div class="search-actions">
+          <button class="btn btn-search" onclick="searchSeries()">查询</button>
+          <button class="btn btn-primary" onclick="openAddModal()">新增系列课程</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>系列ID</th>
+            <th>系列名称</th>
+            <th>课程类别</th>
+            <th>课程数量</th>
+            <th>播放量</th>
+            <th>状态</th>
+            <th>创建时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="seriesTableBody">
+          <tr>
+            <td colspan="8" class="empty-state">
+              <div class="empty-icon">📚</div>
+              <div>暂无数据</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-bar">
+        <span class="pagination-info" id="paginationInfo">共 0 条记录</span>
+        <button class="pagination-btn" id="prevPage" disabled>上一页</button>
+        <span id="paginationNumbers"></span>
+        <button class="pagination-btn" id="nextPage" disabled>下一页</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addModal">
+    <div class="modal" style="max-width: 900px;">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">新增系列课程</span>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="seriesForm">
+          <div class="form-group">
+            <label>状态</label>
+            <select id="formStatus">
+              <option value="active">启用</option>
+              <option value="inactive">禁用</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="required">系列名称</label>
+            <input type="text" id="formName" placeholder="请输入系列名称">
+          </div>
+          <div class="form-group">
+            <label class="required">课程分类</label>
+            <div class="category-row">
+              <select id="formCategory1" onchange="onCategoryChange(1)" class="category-select">
+                <option value="">请选择一级分类</option>
+                <option value="研发运营">研发运营</option>
+                <option value="其他专业">其他专业</option>
+                <option value="行业概览">行业概览</option>
+                <option value="综合技能">综合技能</option>
+                <option value="科学技术">科学技术</option>
+                <option value="人文社科">人文社科</option>
+              </select>
+              <select id="formCategory2" onchange="onCategoryChange(2)" class="category-select">
+                <option value="">请选择二级分类</option>
+              </select>
+              <select id="formCategory3" class="category-select">
+                <option value="">请选择三级分类</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>封面图片</label>
+            <input type="file" id="formCoverFile" accept="image/jpeg,image/png,image/gif" onchange="onCoverFileChange(this)">
+            <div class="tip">支持格式：JPG、PNG、GIF，建议尺寸：1920×1080</div>
+            <div id="coverPreview" style="margin-top: 10px; display: none;">
+              <img id="coverImage" style="max-width: 300px; max-height: 200px; border: 1px solid #e0e0e0; border-radius: 4px;" />
+            </div>
+          </div>
+
+          <div class="course-list-section">
+            <div class="course-list-header">
+              <span class="course-list-title">系列课程列表</span>
+            </div>
+            <table class="course-list-table">
+              <thead>
+                <tr>
+                  <th>课程ID</th>
+                  <th>课程名称</th>
+                  <th>排序</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="courseListBody">
+                <tr>
+                  <td><input type="text" class="course-id-input" placeholder="输入课程ID" onchange="onCourseIdChange(this, 0)"></td>
+                  <td><input type="text" class="course-name-input" placeholder="课程名称" readonly></td>
+                  <td><input type="number" class="sort-input" value="0" min="0" style="width:60px;padding:4px 8px;border:1px solid var(--border-color);border-radius:4px;text-align:center;"></td>
+                  <td>
+                    <span class="add-course-btn" onclick="addCourseRow()">增加</span>
+                    <span class="delete-course-btn" onclick="deleteCourseRow(0)">删除</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="submitSeries()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal confirm-modal">
+      <div class="modal-header">
+        <span class="modal-title">确认删除</span>
+        <button class="modal-close" onclick="closeConfirmModal()">×</button>
+      </div>
+      <div class="confirm-message" id="confirmMessage">确定要删除该系列课程吗？</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeConfirmModal()">取消</button>
+        <button class="btn btn-primary" onclick="confirmDelete()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let seriesData = [];
+    let currentPage = 1;
+    const pageSize = 10;
+    let editingId = null;
+    let deletingId = null;
+    let courseList = [];
+
+    const mockCourseData = {
+      'C001': '世界建筑设计发展简史-P1',
+      'C002': '世界建筑设计发展简史-P2',
+      'C003': '中国历史-P1',
+      'C004': '中国历史-P2',
+      'C005': 'AI技术入门与实践-P1',
+      'C006': 'Python数据分析实战-P1',
+      'C007': '产品经理核心能力-P1',
+      'C008': '游戏开发实战系列-P1'
+    };
+
+    const categoryData = {
+      '研发运营': {
+        '基础开发': ['Java基础', 'Python入门', '前端开发'],
+        '进阶技术': ['微服务架构', '大数据处理', '云原生技术'],
+        '运维管理': ['DevOps', '容器技术', '监控告警']
+      },
+      '其他专业': {
+        '市场营销': ['市场调研', '品牌管理', '数字营销'],
+        '财务管理': ['财务分析', '成本控制', '预算管理'],
+        '人力资源': ['招聘管理', '培训发展', '绩效考核']
+      },
+      '行业概览': {
+        '科技行业': ['互联网趋势', '人工智能', '区块链'],
+        '金融行业': ['金融科技', '投资分析', '风险管理'],
+        '制造行业': ['智能制造', '供应链管理', '质量控制']
+      },
+      '综合技能': {
+        '沟通表达': ['演讲技巧', '商务谈判', '写作能力'],
+        '项目管理': ['敏捷管理', '项目规划', '团队协作'],
+        '时间管理': ['效率提升', '任务管理', '目标设定']
+      },
+      '科学技术': {
+        '前沿技术': ['AI深度学习', '量子计算', '物联网'],
+        '技术研究': ['算法设计', '数据挖掘', '图像处理'],
+        '工程实践': ['系统架构', '性能优化', '安全防护']
+      },
+      '人文社科': {
+        '历史文化': ['中国历史', '世界历史', '文化遗产'],
+        '社会科学': ['社会学', '心理学', '经济学'],
+        '艺术鉴赏': ['美术欣赏', '音乐鉴赏', '文学赏析']
+      }
+    };
+
+    function onCategoryChange(level) {
+      if (level === 1) {
+        const category1 = document.getElementById('formCategory1').value;
+        const category2 = document.getElementById('formCategory2');
+        const category3 = document.getElementById('formCategory3');
+        
+        category2.innerHTML = '<option value="">请选择二级分类</option>';
+        category3.innerHTML = '<option value="">请先选择二级分类</option>';
+        
+        if (category1 && categoryData[category1]) {
+          Object.keys(categoryData[category1]).forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = key;
+            category2.appendChild(option);
+          });
+        } else {
+          category2.innerHTML = '<option value="">请先选择一级分类</option>';
+        }
+      } else if (level === 2) {
+        const category1 = document.getElementById('formCategory1').value;
+        const category2 = document.getElementById('formCategory2').value;
+        const category3 = document.getElementById('formCategory3');
+        
+        category3.innerHTML = '<option value="">请选择三级分类</option>';
+        
+        if (category1 && category2 && categoryData[category1] && categoryData[category1][category2]) {
+          categoryData[category1][category2].forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            option.textContent = item;
+            category3.appendChild(option);
+          });
+        } else {
+          category3.innerHTML = '<option value="">请先选择二级分类</option>';
+        }
+      }
+    }
+
+    function onCoverFileChange(input) {
+      const preview = document.getElementById('coverPreview');
+      const image = document.getElementById('coverImage');
+      
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          image.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        preview.style.display = 'none';
+        image.src = '';
+      }
+    }
+
+    const mockSeriesData = [
+      { id: 'S001', name: '世界建筑设计发展简史', category: '人文社科', courseCount: 12, playCount: 7937, status: 'active', createTime: '2020-11-13' },
+      { id: 'S002', name: '中国历史', category: '人文社科', courseCount: 8, playCount: 5621, status: 'active', createTime: '2021-03-20' },
+      { id: 'S003', name: '东西方审美原则差异', category: '人文社科', courseCount: 6, playCount: 3892, status: 'active', createTime: '2021-06-15' },
+      { id: 'S004', name: '游戏开发实战系列', category: '研发运营', courseCount: 15, playCount: 12456, status: 'active', createTime: '2022-01-10' },
+      { id: 'S005', name: 'AI技术入门与实践', category: '科学技术', courseCount: 10, playCount: 8923, status: 'active', createTime: '2022-05-28' },
+      { id: 'S006', name: '日语从零开始', category: '人文社科', courseCount: 24, playCount: 15678, status: 'active', createTime: '2022-08-12' },
+      { id: 'S007', name: 'Python数据分析实战', category: '科学技术', courseCount: 18, playCount: 9876, status: 'inactive', createTime: '2023-02-15' },
+      { id: 'S008', name: '产品经理核心能力', category: '其他专业', courseCount: 14, playCount: 6543, status: 'active', createTime: '2023-06-20' },
+      { id: 'S009', name: '团队管理进阶', category: '综合技能', courseCount: 8, playCount: 4321, status: 'active', createTime: '2023-09-08' },
+      { id: 'S010', name: '网络安全基础', category: '研发运营', courseCount: 11, playCount: 5678, status: 'inactive', createTime: '2024-01-12' },
+      { id: 'S011', name: '影视行业分析', category: '行业概览', courseCount: 7, playCount: 3210, status: 'active', createTime: '2024-04-25' },
+      { id: 'S012', name: '动画制作入门', category: '研发运营', courseCount: 16, playCount: 7890, status: 'active', createTime: '2024-07-18' },
+    ];
+
+    function init() {
+      seriesData = [...mockSeriesData];
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('seriesTableBody');
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const pageData = seriesData.slice(startIndex, endIndex);
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-state">
+              <div class="empty-icon">📚</div>
+              <div>暂无数据</div>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = pageData.map(item => `
+          <tr>
+            <td>${item.id}</td>
+            <td><a href="series-courses.html" class="series-name-link">${item.name}</a></td>
+            <td>${item.category}</td>
+            <td>${item.courseCount}</td>
+            <td>${item.playCount.toLocaleString()}</td>
+            <td><span class="status-badge ${item.status}">${item.status === 'active' ? '启用' : '禁用'}</span></td>
+            <td>${item.createTime}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn edit" onclick="openEditModal('${item.id}')">编辑</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      updatePagination();
+    }
+
+    function updatePagination() {
+      const totalPages = Math.ceil(seriesData.length / pageSize);
+      const paginationNumbers = document.getElementById('paginationNumbers');
+      const paginationInfo = document.getElementById('paginationInfo');
+      const prevBtn = document.getElementById('prevPage');
+      const nextBtn = document.getElementById('nextPage');
+
+      paginationInfo.textContent = `共 ${seriesData.length} 条记录，当前第 ${currentPage}/${totalPages} 页`;
+
+      let numbersHtml = '';
+      for (let i = 1; i <= totalPages; i++) {
+        numbersHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+      }
+      paginationNumbers.innerHTML = numbersHtml;
+
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages;
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderTable();
+    }
+
+    document.getElementById('prevPage').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+      const totalPages = Math.ceil(seriesData.length / pageSize);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+    });
+
+    function searchSeries() {
+      const name = document.getElementById('searchName').value.trim();
+      const category = document.getElementById('searchCategory').value;
+      const status = document.getElementById('searchStatus').value;
+      const startDate = document.getElementById('searchStartDate').value;
+      const endDate = document.getElementById('searchEndDate').value;
+
+      seriesData = mockSeriesData.filter(item => {
+        if (name && !item.name.includes(name)) return false;
+        if (category && item.category !== category) return false;
+        if (status && item.status !== status) return false;
+        if (startDate && item.createTime < startDate) return false;
+        if (endDate && item.createTime > endDate) return false;
+        return true;
+      });
+
+      currentPage = 1;
+      renderTable();
+    }
+
+    function resetSearch() {
+      document.getElementById('searchName').value = '';
+      document.getElementById('searchCategory').value = '';
+      document.getElementById('searchStatus').value = '';
+      document.getElementById('searchStartDate').value = '';
+      document.getElementById('searchEndDate').value = '';
+      searchSeries();
+    }
+
+    function openAddModal() {
+      editingId = null;
+      courseList = [];
+      document.getElementById('modalTitle').textContent = '新增系列课程';
+      document.getElementById('formStatus').value = 'active';
+      document.getElementById('formName').value = '';
+      document.getElementById('formCategory1').value = '';
+      document.getElementById('formCategory2').innerHTML = '<option value="">请先选择一级分类</option>';
+      document.getElementById('formCategory3').innerHTML = '<option value="">请先选择二级分类</option>';
+      document.getElementById('formCoverFile').value = '';
+      document.getElementById('coverPreview').style.display = 'none';
+      document.getElementById('coverImage').src = '';
+      document.getElementById('addModal').classList.add('active');
+      resetCourseList();
+    }
+
+    function openEditModal(id) {
+      editingId = id;
+      const item = mockSeriesData.find(s => s.id === id);
+      if (item) {
+        document.getElementById('modalTitle').textContent = '编辑系列课程';
+        document.getElementById('formStatus').value = item.status;
+        document.getElementById('formName').value = item.name;
+        document.getElementById('formCategory1').value = item.category;
+        document.getElementById('formCategory2').innerHTML = '<option value="">请先选择一级分类</option>';
+        document.getElementById('formCategory3').innerHTML = '<option value="">请先选择二级分类</option>';
+        document.getElementById('formCoverFile').value = '';
+        document.getElementById('coverPreview').style.display = 'none';
+        document.getElementById('coverImage').src = '';
+        document.getElementById('addModal').classList.add('active');
+        resetCourseList();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('addModal').classList.remove('active');
+      editingId = null;
+      courseList = [];
+      resetCourseList();
+    }
+
+    function onCourseIdChange(input, rowIndex) {
+      const courseId = input.value.trim();
+      const tbody = document.getElementById('courseListBody');
+      const rows = tbody.querySelectorAll('tr');
+      const nameInput = rows[rowIndex].querySelector('.course-name-input');
+      
+      if (courseId && mockCourseData[courseId]) {
+        nameInput.value = mockCourseData[courseId];
+      } else if (courseId) {
+        nameInput.value = '未找到该课程';
+      } else {
+        nameInput.value = '';
+      }
+    }
+
+    function addCourseRow() {
+      const tbody = document.getElementById('courseListBody');
+      const rows = tbody.querySelectorAll('tr');
+      const lastRow = rows[rows.length - 1];
+      const lastIdInput = lastRow.querySelector('.course-id-input');
+      const lastNameInput = lastRow.querySelector('.course-name-input');
+      
+      const exists = Array.from(rows).slice(0, -1).some(row => {
+        const id = row.querySelector('.course-id-input').value.trim();
+        return id === lastIdInput.value.trim();
+      });
+
+      if (exists) {
+        alert('该课程ID已存在');
+        return;
+      }
+
+      newRow.innerHTML = `
+        <td><input type="text" class="course-id-input" placeholder="输入课程ID" onchange="onCourseIdChange(this, ${newIndex})"></td>
+        <td><input type="text" class="course-name-input" placeholder="课程名称" readonly></td>
+        <td><input type="number" class="sort-input" value="0" min="0" style="width:60px;padding:4px 8px;border:1px solid var(--border-color);border-radius:4px;text-align:center;"></td>
+        <td>
+          <span class="add-course-btn" onclick="addCourseRow()">增加</span>
+          <span class="delete-course-btn" onclick="deleteCourseRow(${newIndex})">删除</span>
+        </td>
+      `;
+      tbody.appendChild(newRow);
+    }
+
+    function deleteCourseRow(rowIndex) {
+      const tbody = document.getElementById('courseListBody');
+      const rows = tbody.querySelectorAll('tr');
+
+      rows[rowIndex].remove();
+
+      const remainingRows = tbody.querySelectorAll('tr');
+      remainingRows.forEach((row, index) => {
+        const inputs = row.querySelectorAll('input');
+        inputs[0].setAttribute('onchange', `onCourseIdChange(this, ${index})`);
+        const deleteBtn = row.querySelector('.delete-course-btn');
+        deleteBtn.setAttribute('onclick', `deleteCourseRow(${index})`);
+      });
+    }
+
+    function resetCourseList() {
+      const tbody = document.getElementById('courseListBody');
+      tbody.innerHTML = `
+        <tr>
+          <td><input type="text" class="course-id-input" placeholder="输入课程ID" onchange="onCourseIdChange(this, 0)"></td>
+          <td><input type="text" class="course-name-input" placeholder="课程名称" readonly></td>
+          <td><input type="number" class="sort-input" value="0" min="0" style="width:60px;padding:4px 8px;border:1px solid var(--border-color);border-radius:4px;text-align:center;"></td>
+          <td>
+            <span class="add-course-btn" onclick="addCourseRow()">增加</span>
+            <span class="delete-course-btn" onclick="deleteCourseRow(0)">删除</span>
+          </td>
+        </tr>
+      `;
+    }
+
+    function submitSeries() {
+      const name = document.getElementById('formName').value.trim();
+      const category1 = document.getElementById('formCategory1').value;
+      const category2 = document.getElementById('formCategory2').value;
+      const category3 = document.getElementById('formCategory3').value;
+      const status = document.getElementById('formStatus').value;
+
+      if (!name) {
+        alert('请输入系列名称');
+        return;
+      }
+
+      if (!category1) {
+        alert('请选择一级分类');
+        return;
+      }
+
+      if (editingId) {
+        const index = mockSeriesData.findIndex(s => s.id === editingId);
+        if (index !== -1) {
+          mockSeriesData[index] = {
+            ...mockSeriesData[index],
+            name,
+            category,
+            status
+          };
+        }
+        alert('修改成功');
+      } else {
+        const newId = `S${String(mockSeriesData.length + 1).padStart(3, '0')}`;
+        mockSeriesData.unshift({
+          id: newId,
+          name,
+          category,
+          courseCount: 0,
+          playCount: 0,
+          status,
+          createTime: new Date().toISOString().split('T')[0]
+        });
+        alert('新增成功');
+      }
+
+      closeModal();
+      resetSearch();
+    }
+
+    function openDeleteConfirm(id) {
+      deletingId = id;
+      const item = mockSeriesData.find(s => s.id === id);
+      if (item) {
+        document.getElementById('confirmMessage').textContent = `确定要删除系列课程「${item.name}」吗？此操作不可撤销。`;
+      }
+      document.getElementById('confirmModal').classList.add('active');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.remove('active');
+      deletingId = null;
+    }
+
+    function confirmDelete() {
+      if (deletingId) {
+        const index = mockSeriesData.findIndex(s => s.id === deletingId);
+        if (index !== -1) {
+          mockSeriesData.splice(index, 1);
+          alert('删除成功');
+        }
+      }
+      closeConfirmModal();
+      resetSearch();
+    }
+
+    function viewDetail(id) {
+      const item = mockSeriesData.find(s => s.id === id);
+      if (item) {
+        alert(`系列课程详情\n\nID：${item.id}\n名称：${item.name}\n类别：${item.category}\n课程数量：${item.courseCount}\n播放量：${item.playCount}\n状态：${item.status === 'active' ? '启用' : '禁用'}\n创建时间：${item.createTime}`);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+  <script src="page-navigation.js"></script>
+</body>
+</html>
