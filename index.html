@@ -68,6 +68,31 @@
       margin-top: 20px;
     }
 
+    .mobile-entry {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      margin-top: 20px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      background: var(--primary-color);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .mobile-entry:hover {
+      background: var(--primary-light);
+    }
+
+    .mobile-entry:focus-visible {
+      outline: 3px solid var(--accent-color);
+      outline-offset: 3px;
+    }
+
     .topics-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -263,6 +288,7 @@
     <header class="header">
       <h1>人周一课2026年更新</h1>
       <p>需求汇总</p>
+      <a class="mobile-entry" href="courses-mobile.html">移动端入口 <span aria-hidden="true">→</span></a>
     </header>
 
     <div class="topics-grid">
