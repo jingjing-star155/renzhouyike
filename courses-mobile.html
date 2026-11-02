@@ -557,6 +557,7 @@
       text-align: center;
       font-size: 14px;
       color: var(--text-secondary);
+      text-decoration: none;
       cursor: pointer;
       position: relative;
       transition: all 0.2s;
@@ -1111,7 +1112,7 @@
       <div class="course-tabs-header">
         <div class="course-tab-item active" data-tab="offline">线下/直播课程</div>
         <div class="course-tab-item" data-tab="video">视频课程</div>
-        <div class="course-tab-item" data-tab="series">系列课程</div>
+        <a class="course-tab-item" href="series-courses-mobile.html">系列课程</a>
       </div>
 
       <div class="course-tab-content active" id="tab-offline">
@@ -1390,7 +1391,7 @@
     }, 4000);
 
     // 课程tab切换
-    document.querySelectorAll('.course-tab-item').forEach(tab => {
+    document.querySelectorAll('.course-tab-item[data-tab]').forEach(tab => {
       tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
         
