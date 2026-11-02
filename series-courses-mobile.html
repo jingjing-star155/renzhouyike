@@ -222,36 +222,15 @@
     }
 
     .rating-star {
-      position: relative;
-      display: inline-block;
-      width: 18px;
       font-size: 16px;
       cursor: pointer;
       color: #ddd;
-      transition: transform 0.2s;
-    }
-
-    .rating-star::before {
-      content: '★';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 0;
-      overflow: hidden;
-      color: #FE6360;
-    }
-
-    .rating-star.active::before {
-      width: 100%;
-    }
-
-    .rating-star.half::before {
-      width: 50%;
+      transition: all 0.2s;
     }
 
     .rating-star:hover,
-    .rating-star.active,
-    .rating-star.half {
+    .rating-star.active {
+      color: #FE6360;
       transform: scale(1.1);
     }
 
@@ -1007,26 +986,19 @@
       alert('视频播放功能开发中...');
     }
 
-    function updateRatingStars(rating) {
-      const stars = ratingStars.querySelectorAll('.rating-star');
-      stars.forEach((s, index) => {
-        const starValue = index + 1;
-        s.classList.remove('active', 'half');
-        if (rating >= starValue) {
-          s.classList.add('active');
-        } else if (rating === starValue - 0.5) {
-          s.classList.add('half');
-        }
-      });
-    }
-
     ratingStars.addEventListener('click', function(e) {
       const star = e.target;
       if (star.classList.contains('rating-star')) {
-        const rect = star.getBoundingClientRect();
-        const isHalf = e.clientX - rect.left <= rect.width / 2;
-        currentRating = parseInt(star.dataset.rating) - (isHalf ? 0.5 : 0);
-        updateRatingStars(currentRating);
+        currentRating = parseInt(star.dataset.rating);
+        const stars = ratingStars.querySelectorAll('.rating-star');
+        stars.forEach((s, index) => {
+          if (index < currentRating) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+        alert(`感谢您的${currentRating}星评价！`);
       }
     });
 
@@ -1179,7 +1151,5 @@
       alert('评论发布成功');
     }
   </script>
-  <script src="page-navigation.js"></script>
-  <script src="unified-site-header.js"></script>
 </body>
 </html>
